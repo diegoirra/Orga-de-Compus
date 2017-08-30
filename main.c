@@ -68,5 +68,5 @@ int main(int argc, char** argv) {
 
 	print_usage();
 
-	return 0;
+	return SUCCESS;
 }
