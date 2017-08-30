@@ -1,4 +1,12 @@
 #include <stdio.h>
+#include <string.h>
+
+#define VERSION "1.0"
+
+void print_version() {
+	printf("%s\n", VERSION);
+}
+
 
 void print_usage() {
 	printf("Usage:\n");
@@ -15,6 +23,19 @@ void print_usage() {
 }
 
 int main(int argc, char** argv) {
-	print_usage();
+
+	if(argc != 2 && argc != 5)
+		print_usage();
+
+	if(argc == 2) {
+
+		if(strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help")==0) {
+			print_usage();
+		}
+
+		if(strcmp(argv[1], "-V") == 0 || strcmp(argv[1], "--version")==0) {
+			print_version();
+		}
+	}
 	return 0;
 }
