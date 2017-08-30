@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
+#define SUCCESS 0
 #define VERSION "1.0"
 
 void print_version() {
@@ -22,12 +24,19 @@ void print_usage() {
 	printf("\ttp0 -i ~/input -o ~/output\n");
 }
 
+void handle(char* input_file_name, char* output_file_name) {
+	printf("input: %s\n", input_file_name);
+	printf("output: %s\n", output_file_name);
+	exit(SUCCESS);
+} 
+
 int main(int argc, char** argv) {
 
-	if(argc != 2 && argc != 5)
-		print_usage();
+	if(argc == 1) {
+		handle(NULL, NULL);
+	}
 
-	if(argc == 2) {
+	if(argc == 3) {
 
 		if(strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help")==0) {
 			print_usage();
@@ -36,6 +45,28 @@ int main(int argc, char** argv) {
 		if(strcmp(argv[1], "-V") == 0 || strcmp(argv[1], "--version")==0) {
 			print_version();
 		}
+
+		if(strcmp(argv[1], "-i") == 0) {
+			handle(argv[2], NULL);
+		}
+
+		if(strcmp(argv[1], "-o") == 0) {
+			handle(NULL, argv[2]);
+		}
 	}
+
+	if(argc == 5) {
+
+		if(strcmp(argv[1], "-i") == 0 && strcmp(argv[3], "-o") == 0) {
+			handle(argv[2], argv[4]);
+		}
+
+		if(strcmp(argv[1], "-o") == 0 && strcmp(argv[3], "-i") == 0) {
+			handle(argv[4], argv[2]);
+		}
+	}
+
+	print_usage();
+
 	return 0;
 }
