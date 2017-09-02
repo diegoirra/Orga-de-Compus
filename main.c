@@ -26,9 +26,32 @@ void print_usage() {
 
 void handle(char* input_file_name, char* output_file_name) {
 	printf("input: %s\n", input_file_name);
-	printf("output: %s\n", output_file_name);
+	printf("output: %s\n\n", output_file_name);
+
+	FILE *in_f;
+	FILE *out_f;
+	if (input_file_name!=NULL){
+		in_f = fopen( input_file_name, "r" );
+		if (in_f==NULL) {fputs ("Input file not in directory",stderr); exit (1);}
+	}
+	else {fputs ("NO INPUT PROVIDED",stderr); exit(1);}
+
+	if (output_file_name!=NULL){
+		out_f = fopen( output_file_name, "w" );
+	}
+	else {
+		out_f = stdout;
+		fputs("no output file. output shown in terminal", out_f);
+	}
+
+	/*
+	PROCESAR ARCHIVO
+
+	*/
+	fclose(in_f);
 	exit(SUCCESS);
-} 
+}
+
 
 int main(int argc, char** argv) {
 
@@ -65,6 +88,7 @@ int main(int argc, char** argv) {
 			handle(argv[4], argv[2]);
 		}
 	}
+
 
 	print_usage();
 
