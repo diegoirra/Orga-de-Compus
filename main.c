@@ -24,6 +24,10 @@ void print_usage() {
 	printf("\ttp0 -i ~/input -o ~/output\n");
 }
 
+int es_palindromo(char* word){
+	return 1;
+}
+
 void handle(char* input_file_name, char* output_file_name) {
 	printf("input: %s\n", input_file_name);
 	printf("output: %s\n\n", output_file_name);
@@ -41,14 +45,20 @@ void handle(char* input_file_name, char* output_file_name) {
 	}
 	else {
 		out_f = stdout;
-		fputs("no output file. output shown in terminal", out_f);
+		fputs("no output file. output shown in terminal\n", out_f);
 	}
 
-	/*
-	PROCESAR ARCHIVO
 
-	*/
+    char word[30];
+    while (fscanf(in_f, " %30s", word) == 1) {
+    	if (es_palindromo(word)==1){
+    		fputs(word, out_f);
+    		fputs("\n", out_f);
+    	}
+    }
+
 	fclose(in_f);
+	// fclose(out_f);
 	exit(SUCCESS);
 }
 
