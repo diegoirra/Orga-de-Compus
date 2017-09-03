@@ -25,7 +25,19 @@ void print_usage() {
 }
 
 int es_palindromo(char* word){
-	return 1;
+	int i, j;
+    int es_palindromo = 1;
+	j = strlen(word)-1;
+    for(i=0; i< (strlen(word)/2); i++, j--) {
+        printf("DEBUG: word= %s\n", word);
+    	printf("DEBUG: palindromo= %d\n", es_palindromo);
+    	if (word[i] != word[j]) {
+            printf("DEBUG: no es palindromo porque %c!=%c\n", word[i], word[j]);
+    		es_palindromo = 0;
+            break;
+        }
+    }
+    return es_palindromo;
 }
 
 void handle(char* input_file_name, char* output_file_name) {
@@ -40,7 +52,7 @@ void handle(char* input_file_name, char* output_file_name) {
 	}
 	else {fputs ("NO INPUT PROVIDED",stderr); exit(1);}
 
-	if (output_file_name!=NULL){
+	if (output_file_name!=NULL && strcmp(output_file_name, "-") != 0){
 		out_f = fopen( output_file_name, "w" );
 	}
 	else {
