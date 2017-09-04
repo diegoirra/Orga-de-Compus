@@ -46,8 +46,10 @@ void handle(char* input_file_name, char* output_file_name) {
 		in_f = fopen( input_file_name, "r" );
 		if (in_f==NULL) {fputs ("Input file not in directory",stderr); exit (1);}
 		printf("input: %s\n", input_file_name);
+	} else { 
+		in_f = stdin;
+		printf("input: terminal\n");
 	}
-	else {fputs ("NO INPUT PROVIDED",stderr); exit(1);}
 
 	if (output_file_name!=NULL && strcmp(output_file_name, "-") != 0){
 		out_f = fopen( output_file_name, "w" );
