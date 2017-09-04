@@ -77,10 +77,8 @@ int main(int argc, char** argv) {
 
 	if(argc == 1) {
 		handle(NULL, NULL);
-	}
 
-	if(argc == 3) {
-
+	} else if (argc == 2) {
 		if(strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help")==0) {
 			print_usage();
 		}
@@ -89,6 +87,7 @@ int main(int argc, char** argv) {
 			print_version();
 		}
 
+	} else if(argc == 3) {
 		if(strcmp(argv[1], "-i") == 0) {
 			handle(argv[2], NULL);
 		}
@@ -96,10 +95,8 @@ int main(int argc, char** argv) {
 		if(strcmp(argv[1], "-o") == 0) {
 			handle(NULL, argv[2]);
 		}
-	}
 
-	if(argc == 5) {
-
+	} else if(argc == 5) {
 		if(strcmp(argv[1], "-i") == 0 && strcmp(argv[3], "-o") == 0) {
 			handle(argv[2], argv[4]);
 		}
@@ -108,9 +105,6 @@ int main(int argc, char** argv) {
 			handle(argv[4], argv[2]);
 		}
 	}
-
-
-	print_usage();
 
 	return SUCCESS;
 }
