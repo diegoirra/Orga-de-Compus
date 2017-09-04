@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #define SUCCESS 0
 #define VERSION "1.0"
@@ -29,10 +30,7 @@ int es_palindromo(char* word){
     int es_palindromo = 1;
 	j = strlen(word)-1;
     for(i=0; i< (strlen(word)/2); i++, j--) {
-        printf("DEBUG: word= %s\n", word);
-    	printf("DEBUG: palindromo= %d\n", es_palindromo);
-    	if (word[i] != word[j]) {
-            printf("DEBUG: no es palindromo porque %c!=%c\n", word[i], word[j]);
+    	if (tolower(word[i]) != tolower(word[j])) {
     		es_palindromo = 0;
             break;
         }
@@ -41,23 +39,23 @@ int es_palindromo(char* word){
 }
 
 void handle(char* input_file_name, char* output_file_name) {
-	printf("input: %s\n", input_file_name);
-	printf("output: %s\n\n", output_file_name);
 
 	FILE *in_f;
 	FILE *out_f;
 	if (input_file_name!=NULL){
 		in_f = fopen( input_file_name, "r" );
 		if (in_f==NULL) {fputs ("Input file not in directory",stderr); exit (1);}
+		printf("input: %s\n", input_file_name);
 	}
 	else {fputs ("NO INPUT PROVIDED",stderr); exit(1);}
 
 	if (output_file_name!=NULL && strcmp(output_file_name, "-") != 0){
 		out_f = fopen( output_file_name, "w" );
+		printf("output: %s\n", output_file_name);
 	}
 	else {
 		out_f = stdout;
-		fputs("no output file. output shown in terminal\n", out_f);
+		printf("output: terminal\n");
 	}
 
 
