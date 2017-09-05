@@ -48,7 +48,7 @@ void handle(char* input_file_name, char* output_file_name) {
 		in_f = fopen( input_file_name, "r" );
 
 		if (in_f == NULL) {
-			fprintf(stderr, "No se pudo abrir el archivo de entrada: %s", input_file_name); 
+			fprintf(stderr, "No se pudo abrir el archivo de entrada: %s\n", input_file_name); 
 			exit(ERROR_INPUT_FILE);
 		}
 	} else { 
@@ -59,7 +59,7 @@ void handle(char* input_file_name, char* output_file_name) {
 		out_f = fopen( output_file_name, "w" );
 
 		if (out_f == NULL) {
-			fprintf(stderr, "No se pudo abrir el archivo de salida: %s", output_file_name); 
+			fprintf(stderr, "No se pudo abrir el archivo de salida: %s\n", output_file_name); 
 			exit(ERROR_OUTPUT_FILE);
 		}
 	}
