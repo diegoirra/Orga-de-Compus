@@ -10,7 +10,6 @@ void print_version() {
 	printf("%s\n", VERSION);
 }
 
-
 void print_usage() {
 	printf("Usage:\n");
 	printf("\ttp0 -h\n");
@@ -26,16 +25,16 @@ void print_usage() {
 }
 
 int es_palindromo(char* word){
-	int i, j;
-    int es_palindromo = 1;
+	unsigned int i, j;
+	int es_palindromo = 1;
 	j = strlen(word)-1;
-    for(i=0; i< (strlen(word)/2); i++, j--) {
-    	if (tolower(word[i]) != tolower(word[j])) {
-    		es_palindromo = 0;
-            break;
-        }
-    }
-    return es_palindromo;
+	for(i=0; i< (strlen(word)/2); i++, j--) {
+		if (tolower(word[i]) != tolower(word[j])) {
+			es_palindromo = 0;
+			break;
+		}
+	}
+	return es_palindromo;
 }
 
 void handle(char* input_file_name, char* output_file_name) {
@@ -45,29 +44,25 @@ void handle(char* input_file_name, char* output_file_name) {
 	if (input_file_name!=NULL){
 		in_f = fopen( input_file_name, "r" );
 		if (in_f==NULL) {fputs ("Input file not in directory",stderr); exit (1);}
-		printf("input: %s\n", input_file_name);
 	} else { 
 		in_f = stdin;
-		printf("input: terminal\n");
 	}
 
 	if (output_file_name!=NULL && strcmp(output_file_name, "-") != 0){
 		out_f = fopen( output_file_name, "w" );
-		printf("output: %s\n", output_file_name);
 	}
 	else {
 		out_f = stdout;
-		printf("output: terminal\n");
 	}
 
 
-    char word[30];
-    while (fscanf(in_f, " %30s", word) == 1) {
-    	if (es_palindromo(word)==1){
-    		fputs(word, out_f);
-    		fputs("\n", out_f);
-    	}
-    }
+	char word[30];
+	while (fscanf(in_f, " %30s", word) == 1) {
+    		if (es_palindromo(word)==1){
+			fputs(word, out_f);
+			fputs("\n", out_f);
+		}
+	}
 
 	fclose(in_f);
 	// fclose(out_f);
