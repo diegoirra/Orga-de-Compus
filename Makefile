@@ -17,6 +17,12 @@ test: compile
 	./$(OUTPUT) -i $(TESTS_DIR)/test2.in > $(TESTS_DIR)/test2.res
 	diff $(TESTS_DIR)/test2.out $(TESTS_DIR)/test2.res
 
+	./$(OUTPUT) -i $(TESTS_DIR)/test3.in > $(TESTS_DIR)/test3.res
+	diff $(TESTS_DIR)/test3.out $(TESTS_DIR)/test3.res
+
+	./$(OUTPUT) -i $(TESTS_DIR)/test4.in > $(TESTS_DIR)/test4.res
+	diff $(TESTS_DIR)/test4.out $(TESTS_DIR)/test4.res
+
 clean:
 	rm -f $(OUTPUT)
 	rm -f $(OUTPUT).s
