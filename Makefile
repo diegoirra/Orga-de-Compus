@@ -1,12 +1,23 @@
 CC=gcc
-CLFAGS := -g -std=c99 -Wall -Wextra -Wpedantic
-INPUT=main.c
+CFLAGS := -g -std=c99 -Wall -Wextra -Wpedantic
+INPUT=tp0.c
 OUTPUT=tp0
+TESTS_DIR=tests
 
 compile:
-	$(CC) $(CLFAGS) -o $(OUTPUT) $(INPUT) 
-	objdump -S tp0 >tp0.asm
+	$(CC) $(CFLAGS) -o $(OUTPUT) $(INPUT) 
+
+asm:
+	$(CC) $(CFLAGS) -O0 -S $(INPUT)
+
+test: compile
+	./$(OUTPUT) -i $(TESTS_DIR)/test1.in > $(TESTS_DIR)/test1.res
+	diff $(TESTS_DIR)/test1.out $(TESTS_DIR)/test1.res
+
+	./$(OUTPUT) -i $(TESTS_DIR)/test2.in > $(TESTS_DIR)/test2.res
+	diff $(TESTS_DIR)/test2.out $(TESTS_DIR)/test2.res
 
 clean:
-	rm $(OUTPUT)
-
+	rm -f $(OUTPUT)
+	rm -f $(OUTPUT).s
+	rm -f $(TESTS_DIR)/*.res
