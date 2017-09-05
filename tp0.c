@@ -4,6 +4,8 @@
 #include <ctype.h>
 
 #define SUCCESS 0
+#define ERROR_INPUT_FILE 1
+#define ERROR_OUTPUT_FILE 2
 #define VERSION "1.0"
 
 void print_version() {
@@ -41,15 +43,25 @@ void handle(char* input_file_name, char* output_file_name) {
 
 	FILE *in_f;
 	FILE *out_f;
-	if (input_file_name!=NULL){
+
+	if (input_file_name != NULL && strcmp(input_file_name, "-") != 0) {
 		in_f = fopen( input_file_name, "r" );
-		if (in_f==NULL) {fputs ("Input file not in directory",stderr); exit (1);}
+
+		if (in_f == NULL) {
+			fprintf(stderr, "No se pudo abrir el archivo de entrada: %s", input_file_name); 
+			exit(ERROR_INPUT_FILE);
+		}
 	} else { 
 		in_f = stdin;
 	}
 
-	if (output_file_name!=NULL && strcmp(output_file_name, "-") != 0){
+	if (output_file_name!=NULL && strcmp(output_file_name, "-") != 0) {
 		out_f = fopen( output_file_name, "w" );
+
+		if (out_f == NULL) {
+			fprintf(stderr, "No se pudo abrir el archivo de salida: %s", output_file_name); 
+			exit(ERROR_OUTPUT_FILE);
+		}
 	}
 	else {
 		out_f = stdout;
@@ -64,8 +76,14 @@ void handle(char* input_file_name, char* output_file_name) {
 		}
 	}
 
-	fclose(in_f);
-	// fclose(out_f);
+	if(in_f != NULL && in_f != stdin) {
+		fclose(in_f);
+	}
+
+	if(out_f != NULL && out_f != stdout) {
+		fclose(out_f);
+	}
+
 	exit(SUCCESS);
 }
 
