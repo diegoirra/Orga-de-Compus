@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS := -g -std=c99 -Wall -Wextra -Wpedantic
+CFLAGS := -g -Wall
 INPUT=tp0.c
 OUTPUT=tp0
 TESTS_DIR=tests
