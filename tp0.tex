@@ -1,0 +1,226 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{mips}
+\usepackage[spanish]{babel}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\begin{document}
+
+\date{12 de Septiembre del 2017}
+
+\title{Univesidad de Buenos Aires - FIUBA \\ 66:20 Organización de Computadoras \\ Trabajo práctico 0: Infraestructura básica}
+
+\author{Barrera Oro, Rafael (83240) \\ Bacigaluppo, Ivan (98064) \\ Irrazabal, Diego (98125)}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\newpage
+
+\setcounter{page}{1}
+
+\tableofcontents
+
+\newpage
+
+\section{Documentación de diseño e implementación}
+
+El tp lo comenzamos realizando un makefile bastante simple, con algunos flags, para poder compilarlo y obtener el código assembler cuando ya estuviese terminado. 
+
+Luego comenzamos con el código ya propio de lo pedido en la consigna. En primer lugar, armamos el main de manera que distinguiese que opción se había ingresado para ejecutar el programa. Al verificar esto, armamos una función para el comando -h, la cual imprime lo pedido; con el comando -V directamente la versión y, por último, hay una función encargada de verificar cual es el archivo de entrada y cual el de salida del programa. En los primeros dos casos el programa termina inmediatamente después de la impresión.
+
+Esta función, llamada handle, para comenzar a trabajar hicimos que obligatoriamente tenga que recibir un archivo de entrada y uno de salida. Ya con esto andando, le agregamos funcionalidad para llegar a lo pedido. Para esto realizamos chequeos de los argumentos recibidos a la hora de ejecutar el programa.
+
+Primero se hacen las verificaciones del archivo de entrada. Si lo recibido para este mismo es distinto de NULL, lo abre para lectura; en caso contrario, toma como entrada por defecto la terminal (stdin). Luego, de manera similar, verifica el archivo de salida. Si es distinto de NULL, lo abre pero para escritura en este caso y, de manera contraria, si no se le pasó por comando de entrada, utiliza por defecto la terminal como salida (stdout). Cualquier error en la apertura de los archivos se informa mediante la salida estándar stderr.
+
+Una vez terminados los chequeos relacionados a los archivos, lee del archivo de entrada y llama a la función es\_palindromo, la cual de manera muy simple chequea si la palabra recibida por parámetro es o no un palíndromo. Finalmente se vuelve a la función handle, en donde se cierran los archivos y finaliza la ejecución del programa.
+
+Finalizado el código del programa, realizamos unas pruebas, las cuales se ejecutan desde el Makefile. Funcionan de la siguiente manera: agarran un archivo test.in y generan el resultado del programa en un archivo de salida test.res. Luego, comparan eso con un test.out, el cual tiene el resultado esperado. Para esta comparación se utiliza el comando diff, el cual devuelve las diferencias entre los dos archivos que recibe. Esto quiere decir que, en caso de haber diferencias entre lo obtenido y lo esperado, se generaría una salida, lo cual se puede ver que no ocurre.
+
+\newpage
+
+\section{Documentación de compilación}
+
+\subsection{Compilación}
+
+\lstset{
+	breaklines=true,
+  	basicstyle=\footnotesize,
+}
+
+Se ha incluido un archivo Makefile para simplificar la obtención del ejecutable, el mismo puede obtenerse simplemente mediante la ejecución del comando \textit{make}, que generará un archivo binario \textit{tp0}:
+
+\begin{lstlisting}[language=bash]
+$ make
+gcc -g -Wall -o tp0 tp0.c 
+$ ls
+tp0.c Makefile tp0 
+\end{lstlisting}
+
+\subsection{Ejecución}
+
+Una vez obtenido el ejecutable, el mismo se puede ejecutar con el parámetro \textit{-h} para obtener la leyenda de ayuda:
+
+\begin{lstlisting}[language=bash]
+$ ./tp0 -h
+Usage:
+	tp0 -h
+	tp0 -V
+	tp0 [options]
+Options:
+	-V, --version	Print version and quit.
+	-h, --help	Print this information.
+	-i, --input	Location of the input file.
+	-o, --output	Location of the output file.
+Examples:
+	tp0 -i ~/input -o ~/output
+Usage:
+	tp0 -h
+	tp0 -V
+	tp0 [options]
+Options:
+	-V, --version	Print version and quit.
+	-h, --help	Print this information.
+	-i, --input	Location of the input file.
+	-o, --output	Location of the output file.
+Examples:
+	tp0 -i ~/input -o ~/output
+
+\end{lstlisting}
+
+O utilizando cualquiera de los parámetros requeridos por el enunciado:
+
+\begin{lstlisting}[language=bash]
+$ echo "somos todos bob" | ./tp0 -o pal.txt
+$ cat pal.txt
+somos
+bob
+\end{lstlisting}
+
+\newpage
+
+\section{Casos de prueba}
+
+\subsection{Makefile}
+
+Se puede utilizar el Makefile para correr casos de prueba:
+
+\begin{lstlisting}[language=bash]
+$ make test
+gcc -g -Wall -o tp0 tp0.c 
+./tp0 -i tests/test1.in > tests/test1.res
+diff tests/test1.out tests/test1.res
+./tp0 -i tests/test2.in > tests/test2.res
+diff tests/test2.out tests/test2.res
+./tp0 -i tests/test3.in > tests/test3.res
+diff tests/test3.out tests/test3.res
+./tp0 -i tests/test4.in > tests/test4.res
+diff tests/test4.out tests/test4.res
+\end{lstlisting}
+
+\subsection{Validación de parámetros}
+
+\subsubsection{Input}
+
+\begin{lstlisting}[language=bash]
+$ ./tp0 -i /tmp/noexiste.txt
+No se pudo abrir el archivo de entrada: /tmp/noexiste.txt
+\end{lstlisting}
+
+\subsubsection{Output}
+
+\begin{lstlisting}[language=bash]
+$ echo "bob" |./tp0 -o /tmp/
+No se pudo abrir el archivo de salida: /tmp/
+\end{lstlisting}
+
+\subsection{Utilizado entrada y salida standard}
+
+\begin{lstlisting}[language=bash]
+$ echo "somos bob hope"|./tp0 
+somos
+bob
+\end{lstlisting}
+
+\subsection{Utilizado archivos}
+
+\begin{lstlisting}[language=bash]
+$ echo "somos bob hope" >> test.txt
+$ ./tp0 -i test.txt -o pal.txt
+$ cat pal.txt 
+somos
+bob
+\end{lstlisting}
+
+\newpage
+
+\section{Código fuente}
+
+\subsection{C}
+
+\lstset{
+	breaklines=true,
+  	basicstyle=\footnotesize,
+	numbers=left,
+	captionpos=b,
+	showspaces=false,
+	title=\lstname
+}
+
+\lstinputlisting[language=C]{tp0.c}
+
+\newpage
+
+\subsection{Assembly (MIPS)}
+
+El siguiente es un extracto del código assembly generado con los mismos flags de compilación utilizados para generer al ejecutable más \textit{-O0} para evitar cualquier optimización que pueda alterar el resultado (dentro del entorno MIPS emulado mediante el gxemul y la imagen netbsd):
+
+\lstset{
+	breaklines=true,
+  	basicstyle=\footnotesize,
+}
+
+\begin{lstlisting}[language=bash]
+$ make asm
+gcc -g -Wall -O0 -S tp0.c
+Makefile tp0.c    tp0.s
+\end{lstlisting}
+
+\lstset{
+  language=[mips]Assembler,       % the language of the code
+  basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line 
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  frame=single,                   % adds a frame around the code
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  tabsize=4,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+  keywordstyle=\color{blue},          % keyword style
+  commentstyle=\color{dkgreen},       % comment style
+  stringstyle=\color{mauve},         % string literal style
+  escapeinside={\%*}{*)},            % if you want to add a comment within your code
+  morekeywords={*,...}               % if you want to add more keywords to the set
+}
+
+\lstinputlisting{tp0.s}
+
+
+\end{document}
