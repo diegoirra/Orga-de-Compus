@@ -12,6 +12,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <errno.h>
+
+/* Valores posibles de ERRNO para chequear error:
+ *
+ * www.virtsync.com/c-error-codes-include-errno
+ *
+ * Valores que puede tomar ERRNO con fopen:
+ * http://man7.org/linux/man-pages/man3/fopen.3.html#ERRORS
+ *
+ * Valores que puede tomar ERRNO con fclose:
+ * http://man7.org/linux/man-pages/man3/fclose.3.html#ERRORS
+ */
 
 #define SUCCESS 0
 #define ERROR_INPUT_FILE 1
