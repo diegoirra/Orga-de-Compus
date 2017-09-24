@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
-#define SUCCESS 0
-#define ERROR_INPUT_FILE 1
-#define ERROR_OUTPUT_FILE 2
-#define VERSION "1.0"
+#include "tp0.h"
 
 void print_version() {
 	printf("%s\n", VERSION);
