@@ -40,7 +40,8 @@ void handle(char* input_file_name, char* output_file_name) {
 		in_f = fopen( input_file_name, "r" );
 
 		if (in_f == NULL) {
-			fprintf(stderr, "No se pudo abrir el archivo de entrada: %s\n", input_file_name); 
+			fprintf(stderr, "ERROR:\nNo se pudo abrir el archivo de entrada: %s\n", input_file_name);
+			perror("Saliendo con error");
 			exit(ERROR_INPUT_FILE);
 		}
 	} else { 
@@ -51,7 +52,8 @@ void handle(char* input_file_name, char* output_file_name) {
 		out_f = fopen( output_file_name, "w" );
 
 		if (out_f == NULL) {
-			fprintf(stderr, "No se pudo abrir el archivo de salida: %s\n", output_file_name); 
+			fprintf(stderr, "No se pudo abrir el archivo de salida: %s\n", output_file_name);
+			perror("Saliendo con error");
 			exit(ERROR_OUTPUT_FILE);
 		}
 	}
@@ -60,8 +62,8 @@ void handle(char* input_file_name, char* output_file_name) {
 	}
 
 
-	char word[30];
-	while (fscanf(in_f, " %30s", word) == 1) {
+	char word[30]; //por que el limite?
+	while (fscanf(in_f, " %30s", word) == 1 && !feof(stdin)) {
     		if (es_palindromo(word)==1){
 			fputs(word, out_f);
 			fputs("\n", out_f);
