@@ -18,7 +18,7 @@ void print_usage() {
 	printf("\ttp0 -i ~/input -o ~/output\n");
 }
 
-int es_palindromo(char* word){
+int is_pal(char* word){
 	unsigned int i, j;
 	int es_palindromo = 1;
 	j = strlen(word)-1;
@@ -29,6 +29,24 @@ int es_palindromo(char* word){
 		}
 	}
 	return es_palindromo;
+}
+
+void chomp(char* s) {
+	if(s[strlen(s) - 1] == '\n') {
+		s[strlen(s) - 1] = '\0';
+	}
+}
+
+void handle_line(char* line, FILE* out_f) {
+	char* word = strtok(line, " ");
+	while (word) {
+		chomp(word);
+		if(is_pal(word)) {
+			fputs(word, out_f);
+			fputs("\n", out_f);
+		}			
+		word = strtok(NULL, " ");	
+	}
 }
 
 void handle(char* input_file_name, char* output_file_name) {
@@ -61,13 +79,10 @@ void handle(char* input_file_name, char* output_file_name) {
 		out_f = stdout;
 	}
 
-
-	char word[30]; //por que el limite?
-	while (fscanf(in_f, " %30s", word) == 1 && !feof(stdin)) {
-    		if (es_palindromo(word)==1){
-			fputs(word, out_f);
-			fputs("\n", out_f);
-		}
+	char* line = NULL;
+	size_t len = 0;
+ 	while (getline(&line, &len, in_f) != -1) {
+		handle_line(line, out_f);
 	}
 
 	if(in_f != NULL && in_f != stdin) {
@@ -80,7 +95,6 @@ void handle(char* input_file_name, char* output_file_name) {
 
 	exit(SUCCESS);
 }
-
 
 int main(int argc, char** argv) {
 
