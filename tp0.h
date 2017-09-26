@@ -29,9 +29,10 @@
 #define ERROR_INPUT_FILE 1
 #define ERROR_OUTPUT_FILE 2
 #define VERSION "1.5"
+#define MAX_LINE_LENGTH 256
 
 /*
- * Imprime la versión actual del proyecto
+ * Imprime la version actual del proyecto
  * Sin retorno.
  */
 void print_version();
@@ -43,7 +44,7 @@ void print_version();
 void print_usage();
 
 /*
- * Evalúa si la palabra pasada por parametro es un palindromo
+ * Evalua si la palabra pasada por parametro es un palindromo
  * PARAMETRO: puntero a cadena de chars 'word' a evaluar
  * RETORNO: int booleano correspondiente a si la palabra es palindromo:
  * 			1 para true, 0 para false.
@@ -55,7 +56,7 @@ int es_palindromo(char* word);
  * Procesa los archivos de entrada y salida pasados por parametros, o asigna los
  * standard inout o output si no fueran dados.
  * PRAMETROS: dos punteros a cadenas de caracteres corespondientes a nombres de archivos
- * 			  de input y output. De ser NULL, se tomará el archivo standard.
+ * 			  de input y output. De ser NULL, se tomara el archivo standard.
  * Sin retorno.
  */
 void handle(char* input_file_name, char* output_file_name);
