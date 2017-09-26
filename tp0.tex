@@ -14,7 +14,7 @@
 
 \begin{document}
 
-\date{12 de Septiembre del 2017}
+\date{26 de Septiembre del 2017}
 
 \title{Univesidad de Buenos Aires - FIUBA \\ 66:20 Organización de Computadoras \\ Trabajo práctico 0: Infraestructura básica}
 
@@ -32,23 +32,63 @@
 
 \newpage
 
-\section{Documentación de diseño e implementación}
+\section{Documentación}
 
-El tp lo comenzamos realizando un makefile bastante simple, con algunos flags, para poder compilarlo y obtener el código assembler cuando ya estuviese terminado. 
+\subsection{Diseño}
+
+Este primer tp es bastante simple puesto que el objetivo real no es el desafío de implementarlo si no familiarizarnos con las herramientas nuevas que se utilizarán a lo largo del curso.
+
+Comenzamos realizando un archivo makefile bastante simple, con algunos flags, para poder compilarlo y ejecutarlo en cuanto antes. Para así poder empezar a probar cualquier cambio que hicieramos, y asegurarnos que compilara adecuadamente con el comando make. Este makefile compilaría el código mediante los siguientes comandos:
+
+	gcc -g -Wall -o tp0 tp0.c
 
 Luego comenzamos con el código ya propio de lo pedido en la consigna. En primer lugar, armamos el main de manera que distinguiese que opción se había ingresado para ejecutar el programa. Al verificar esto, armamos una función para el comando -h, la cual imprime lo pedido; con el comando -V directamente la versión y, por último, hay una función encargada de verificar cual es el archivo de entrada y cual el de salida del programa. En los primeros dos casos el programa termina inmediatamente después de la impresión.
 
-Esta función, llamada handle, para comenzar a trabajar hicimos que obligatoriamente tenga que recibir un archivo de entrada y uno de salida. Ya con esto andando, le agregamos funcionalidad para llegar a lo pedido. Para esto realizamos chequeos de los argumentos recibidos a la hora de ejecutar el programa.
+La parte importante del programa fue implementada en la función handle que recibe los argumentos correspondientes como parámetros si los hubiese, o NULL en caso contrario. Esta función se encarga de procesar los archivos de entrada y salida, o asiganar los inputo o output standard para trabajar si alguno hubiera sido pasado como NULL.
 
-Primero se hacen las verificaciones del archivo de entrada. Si lo recibido para este mismo es distinto de NULL, lo abre para lectura; en caso contrario, toma como entrada por defecto la terminal (stdin). Luego, de manera similar, verifica el archivo de salida. Si es distinto de NULL, lo abre pero para escritura en este caso y, de manera contraria, si no se le pasó por comando de entrada, utiliza por defecto la terminal como salida (stdout). Cualquier error en la apertura de los archivos se informa mediante la salida estándar stderr.
+Siguiendo el modelo de implementación incremental, en una primera básica versión esta función requeriría un archivo input existente, e imprimiría el resultado por la consola. De esta forma se simplifica la verificación del correcto funcionamiento del programa.
 
-Una vez terminados los chequeos relacionados a los archivos, lee del archivo de entrada y llama a la función es\_palindromo, la cual de manera muy simple chequea si la palabra recibida por parámetro es o no un palíndromo. Finalmente se vuelve a la función handle, en donde se cierran los archivos y finaliza la ejecución del programa.
+Finalmente, handle realiza la verificacion del archivo de entrada. Si lo recibido para este mismo es distinto de NULL, lo abre para lectura; en caso contrario, toma como entrada por defecto la terminal (stdin). Luego, de manera similar, verifica el archivo de salida. Si es distinto de NULL, lo abre pero para escritura en este caso y, de manera contraria, si no se le pasó por comando de entrada, utiliza por defecto la terminal como salida (stdout). Cualquier error en la apertura de los archivos se informa mediante la salida estándar stderr.
 
-Finalizado el código del programa, realizamos unas pruebas, las cuales se ejecutan desde el Makefile. Funcionan de la siguiente manera: agarran un archivo test.in y generan el resultado del programa en un archivo de salida test.res. Luego, comparan eso con un test.out, el cual tiene el resultado esperado. Para esta comparación se utiliza el comando diff, el cual devuelve las diferencias entre los dos archivos que recibe. Esto quiere decir que, en caso de haber diferencias entre lo obtenido y lo esperado, se generaría una salida, lo cual se puede ver que no ocurre.
+A continuación se pasó a procesar el archivo de entrada, leyendo linea por linea, para luego procesar cada linea, dividiendola en palabras y tomando las que son palindromos. No pudimos sortear la aleatoriedad de la longitud de la linea del archivo asi que externalizamos el valor maximo de longitud de linea admitido en una definicion en el .h.
+
+Una dificultad que aparecio en este punto fue sortear los caracteres de fin de linea que decidimos recortar antes de procesar cada palabra (ver funcion chomp).
+
+Luego nos encontramos con la única parte del código no trivial, que era la implementación de la función que determine si la palabra era o no un palíndromo. Leyendo la base del algoritmo, determinamos que la mejor forma de implementarlo era con un ciclo basado en dos puntas, una al principio y una al final de cada palabra, que la recorran hasta encontrarse en el medio, verificando ser iguales en todo momento. Así, el ciclo se rompe si estas puntas son distintas, lo que significa que la palabra no sería un palíndromo.
+
+Ya implementado y probado esto, se terminó la compleción del programa agregando el procesado de entada por consola, y salida en el archivo pasado por parámetro al ejecutar el programa. Este programa sería luego levantado desde le emulación de la maquina virtual con NetBSD que nos permitiría obtener el código assembly de nuestra aplicación, incluido al final de este informe, con el comando de makefile make asm.
 
 \newpage
 
-\section{Documentación de compilación}
+\subsection{Implementación}
+
+\subsubsection{void print\_version()}
+
+Imprime la version del programa por consola.
+
+\subsubsection{void print\_usage()}
+
+Imprime la leyenda de ayuda del programa por consola.
+
+\subsubsection{int is\_pal(char* word)}
+
+Recibe un puntero a una cadena de caracteres y devuelve 1 si la misma es un palindromo y 0 si no lo es.
+
+\subsubsection{void chomp(char* word)}
+
+Recibe un puntero a una cadena de caracteres y elimina el ultimo caracter de la misma si se trata de un salto de linea (el nombre de la funcion fue tomado de la funcion homonima de PERL).
+
+\subsubsection{void handle\_line(char* line, FILE* out\_f)}
+
+Recibe un puntero a una linea del archivo y un puntero a un archivo de salida, se encarga de imprimir todos los palindromos encontrados en la linea, en el archivo recibido
+
+\subsubsection{void handle(char* input\_file\_name, char* output\_file\_name)}
+
+Recibe punteros a los nombres completos de los archivos de entrada y salida, procede a ejecutar la logica completa del programa (si algun nombre es equivalente a "-" se reemplaza por la entrada/salida estandar)
+
+\subsubsection{int main(int argc, char** argv)}
+
+Punto de entrada al programa, se procesan los parametros recibidos de linea de comando y se ejecuta la logica del programa de ser correctos, de lo contrario se muestra la leyenda de ayuda.
 
 \subsection{Compilación}
 
@@ -176,6 +216,81 @@ bob
 	title=\lstname
 }
 
+\begin{lstlisting}
+/*
+ * tpo.h
+ *
+ *  Created on: 24 sep. 2017
+ *      Author: Diego
+ */
+
+#ifndef TP0_H_
+#define TP0_H_
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <errno.h>
+
+/* Valores posibles de ERRNO para chequear error:
+ *
+ * www.virtsync.com/c-error-codes-include-errno
+ *
+ * Valores que puede tomar ERRNO con fopen:
+ * http://man7.org/linux/man-pages/man3/fopen.3.html#ERRORS
+ *
+ * Valores que puede tomar ERRNO con fclose:
+ * http://man7.org/linux/man-pages/man3/fclose.3.html#ERRORS
+ */
+
+#define SUCCESS 0
+#define ERROR_INPUT_FILE 1
+#define ERROR_OUTPUT_FILE 2
+#define VERSION "1.5"
+#define MAX_LINE_LENGTH 256
+
+/*
+ * Imprime la version actual del proyecto
+ * Sin retorno.
+ */
+void print_version();
+
+/*
+ * Imprime los parametros aceptados al ejectuar el programa por linea de comandos
+ * Sin retorno.
+ */
+void print_usage();
+
+/*
+ * Evalua si la palabra pasada por parametro es un palindromo
+ * PARAMETRO: puntero a cadena de chars 'word' a evaluar
+ * RETORNO: int booleano correspondiente a si la palabra es palindromo:
+ * 			1 para true, 0 para false.
+ */
+int es_palindromo(char* word);
+
+
+/*
+ * Procesa los archivos de entrada y salida pasados por parametros, o asigna los
+ * standard inout o output si no fueran dados.
+ * PRAMETROS: dos punteros a cadenas de caracteres corespondientes a nombres de archivos
+ * 			  de input y output. De ser NULL, se tomara el archivo standard.
+ * Sin retorno.
+ */
+void handle(char* input_file_name, char* output_file_name);
+
+/*
+ * Main para ejecutar el programa. Toma los parametros agregados en la linea de comando.
+ * RETORNO: codigo int SUCCES definido como 1.
+ */
+int main(int argc, char** argv);
+
+#endif /* TP0_H_ */
+\end{lstlisting}
+
+\newpage
+
 \lstinputlisting[language=C]{tp0.c}
 
 \newpage
@@ -222,5 +337,8 @@ Makefile tp0.c    tp0.s
 
 \lstinputlisting{tp0.s}
 
+\section{Conclusiones}
+
+Al final de este proyecto más alla de la simpleza del mismo, pudimos observar los usos de cada distinta herramienta. Observamos como LaTex sirve para escrbir documentos que particularmente incluyan código de programas, puesto que su estructura y posibilidad de personalizar el formato hace más facil su lectura. Vimos como gxemul nos posibilita levantar una imagen virtual de otro sistema operativo dentro de nuestra propia máquina. Esta imagen sea NetBSD que utilizamos para poder trabajar con otras arquitecturas que nuestro sistema operativo no permitía, como en particular assembly y la obtención del código en un '.s'. Cabe resaltar esta particularidad de NetBSD  ya que es la base fundamental para la realización del siguiente trabajo práctico, que constará en trabajar con el código asm de este trabajo, y solo podemos hacerlo mediante la máquina virtual
 
 \end{document}
