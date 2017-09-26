@@ -20,15 +20,15 @@ void print_usage() {
 
 int is_pal(char* word){
 	unsigned int i, j;
-	int es_palindromo = 1;
+	int is_pal = 1;
 	j = strlen(word)-1;
 	for(i=0; i< (strlen(word)/2); i++, j--) {
 		if (tolower(word[i]) != tolower(word[j])) {
-			es_palindromo = 0;
+			is_pal = 0;
 			break;
 		}
 	}
-	return es_palindromo;
+	return is_pal;
 }
 
 void chomp(char* s) {
