@@ -79,9 +79,8 @@ void handle(char* input_file_name, char* output_file_name) {
 		out_f = stdout;
 	}
 
-	char* line = NULL;
-	size_t len = 0;
- 	while (getline(&line, &len, in_f) != -1) {
+	char line[MAX_LINE_LENGTH];
+	while (fgets(line, sizeof(line), in_f)) {
 		handle_line(line, out_f);
 	}
 
