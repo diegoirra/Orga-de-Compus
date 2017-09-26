@@ -2,3 +2,7 @@
 tp0
 /Release/
 /tests/*.res
+tp0.aux
+tp0.dvi
+tp0.log
+tp0.toc
