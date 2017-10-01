@@ -49,8 +49,12 @@ void print_usage();
  * RETORNO: int booleano correspondiente a si la palabra es palindromo:
  * 			1 para true, 0 para false.
  */
-int es_palindromo(char* word);
+int is_pal(char* word);
 
+/**
+ * Implementacion de is_pal en MIPS32
+ */
+int is_pal_mips32(char* word);
 
 /*
  * Procesa los archivos de entrada y salida pasados por parametros, o asigna los
