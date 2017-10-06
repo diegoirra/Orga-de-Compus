@@ -1,4 +1,6 @@
 #include <mips/regdef.h>
+#include <sys/syscall.h>
+#include "is_pal.h"
 
 .text
 .align 2
