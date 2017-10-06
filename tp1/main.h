@@ -25,8 +25,10 @@
 #define SUCCESS 0
 #define ERROR_INPUT_FILE 1
 #define ERROR_OUTPUT_FILE 2
+
 #define VERSION "2"
 #define MAX_LINE_LENGTH 256
+
 #define INPUT_BUFFER_DEFAULT 1
 #define OUTPUT_BUFFER_DEFAULT 1
 #define INPUT_FILE_DEFAULT NULL
@@ -46,26 +48,33 @@ void print_version();
 void print_usage();
 
 /*
+ * >>>>>>>>>>> Implementada en ASM MIPS32
+ * Identifica, procesa e imprime los componentes lexicos que resulten ser palindromos.
+ * PARAMETROS: ifd y ofd los descriptores abiertos de los archivos deentrada y salida respectivamente.
+ * 			   ibytes y obytes describen los tama˜nos en bytes de las unidades de transferencia
+ * 			   de datos desde y hacia el kernel de NetBSD
+ * RETORNO: int booleano correspondiente al exito de la funcion.
+ */
+int palindrome(int ifd, size_t ibytes, int ofd, size_t obytes);
+
+/*
  * Evalua si la palabra pasada por parametro es un palindromo
  * PARAMETRO: puntero a cadena de chars 'word' a evaluar
  * RETORNO: int booleano correspondiente a si la palabra es palindromo:
  * 			1 para true, 0 para false.
  */
-int is_pal(char* word);
+//int is_pal(char* word);
 
-/**
- * Implementacion de is_pal en MIPS32
- */
-int is_pal_mips32(char* word);
 
 /*
  * Procesa los archivos de entrada y salida pasados por parametros, o asigna los
  * standard inout o output si no fueran dados.
  * PRAMETROS: dos punteros a cadenas de caracteres corespondientes a nombres de archivos
  * 			  de input y output. De ser NULL, se tomara el archivo standard.
+ * 			  dos enteros representantes de bytes para los buffers de input y output
  * Sin retorno.
  */
-void handle(char* input_file_name, char* output_file_name);
+void handle(char* input_file_name, char* output_file_name, int ibuffer, int obuffer);
 
 /*
  * Main para ejecutar el programa. Toma los paramétros agregados en la linea de comando.
