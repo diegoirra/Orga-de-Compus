@@ -21,7 +21,7 @@ palindrome:
     move    $fp,	sp                  
 
     jal     strlen							  
-	move    t0,    vo				   		   #t0 = strlen()
+	move    t0,    v0				   		   #t0 = strlen()
 
     lw      a0     40(sp)                      #load arg
     move    t1,    a0                          #a0 -> t1
