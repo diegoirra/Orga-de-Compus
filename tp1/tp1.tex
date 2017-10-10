@@ -50,11 +50,11 @@ Siguiendo el modelo de implementación incremental, en una primera básica versi
 
 Finalmente, handle realiza la verificacion del archivo de entrada. Si lo recibido para este mismo es distinto de NULL, lo abre para lectura; en caso contrario, toma como entrada por defecto la terminal (stdin). Luego, de manera similar, verifica el archivo de salida. Si es distinto de NULL, lo abre pero para escritura en este caso y, de manera contraria, si no se le pasó por comando de entrada, utiliza por defecto la terminal como salida (stdout). Cualquier error en la apertura de los archivos se informa mediante la salida estándar stderr.
 
-A continuación, se llama a la función is_pal, la cual está codificada en MIPS, tal como pide la consigna. Internamente esta función hace un llamado a getch, en donde se procesa el archivo. Para esto se crea un buffer, utilizando la función mymalloc proporcionada por la cátedra. Luego este buffer se llena mediante una llamada a la syscall read. 
+A continuación, se llama a la función is_pal, la cual está codificada en MIPS, tal como pide la consigna. Internamente esta función hace un llamado a getch, una función que se encunetra en otro módulo, en donde se procesa el archivo. Para esto se crea un buffer, utilizando la función mymalloc proporcionada por la cátedra. Luego este buffer se llena mediante una llamada a la syscall read.
 
+Una vez que se tiene el buffer ya cargado, se pasa a leer una por una las palabras del mismo. Para esto nos encontramos con una dificultad que todavía no pudimos resolver, la cual es como separar las palabras en MIPS. Luego, cada una de las palabras debería pasar por la función strlen, la cual devuelve la longitud de ellas. Una vez que se obtiene esta longitud se pasa a un loop en el cual se verifica si la palabra es o no un palíndromo. En caso de que lo sea, se debería hacer una llamada a putch, la cual todavía no se encuentra implementada, pero que internamente debería llenar un buffer de salida y llamar a la syscall write.
 
-
-Ya implementado y probado esto, se terminó la compleción del programa agregando el procesado de entada por consola, y salida en el archivo pasado por parámetro al ejecutar el programa. Este programa sería luego levantado desde le emulación de la maquina virtual con NetBSD que nos permitiría obtener el código assembly de nuestra aplicación, incluido al final de este informe, con el comando de makefile make asm.
+Una vez que esté finalizado el código por completo procederemos a probarlo de la misma manera que en el tp0, mediante pruebas automatizadas que se pueden correr directamente desde el makefile.
 
 \newpage
 
@@ -68,21 +68,13 @@ Imprime la version del programa por consola.
 
 Imprime la leyenda de ayuda del programa por consola.
 
-\subsubsection{int is\_pal(char* word)}
+\subsubsection{int palindrome(int ifd, size\_t ibytes, int ofd, size\_t obytes)}
 
-Recibe un puntero a una cadena de caracteres y devuelve 1 si la misma es un palindromo y 0 si no lo es.
+Recibe un input file descriptor, un tamaño de bytes para los buffer de lectura, un output file descriptor y un tamañao de bytes para los buffers de salida. Internamente llama a la función implementada en MIPS is_pal.
 
-\subsubsection{void chomp(char* word)}
+\subsubsection{void handle(char* input\_file\_name, char* output\_file\_name, int input\_buffer, int output\_buffer,)}
 
-Recibe un puntero a una cadena de caracteres y elimina el ultimo caracter de la misma si se trata de un salto de linea (el nombre de la funcion fue tomado de la funcion homonima de PERL).
-
-\subsubsection{void handle\_line(char* line, FILE* out\_f)}
-
-Recibe un puntero a una linea del archivo y un puntero a un archivo de salida, se encarga de imprimir todos los palindromos encontrados en la linea, en el archivo recibido
-
-\subsubsection{void handle(char* input\_file\_name, char* output\_file\_name)}
-
-Recibe punteros a los nombres completos de los archivos de entrada y salida, procede a ejecutar la logica completa del programa (si algun nombre es equivalente a "-" se reemplaza por la entrada/salida estandar)
+Recibe punteros a los nombres completos de los archivos de entrada y salida, procede a ejecutar la logica completa del programa, mediante el llamado a la función de MIPS (si algun nombre es equivalente a "-" se reemplaza por la entrada/salida estandar). A su vez, recibe los tamaños de los buffer de entrada y salida.
 
 \subsubsection{int main(int argc, char** argv)}
 
@@ -95,13 +87,13 @@ Punto de entrada al programa, se procesan los parametros recibidos de linea de c
   	basicstyle=\footnotesize,
 }
 
-Se ha incluido un archivo Makefile para simplificar la obtención del ejecutable, el mismo puede obtenerse simplemente mediante la ejecución del comando \textit{make}, que generará un archivo binario \textit{tp0}:
+Se ha incluido un archivo Makefile para simplificar la obtención del ejecutable, el mismo puede obtenerse simplemente mediante la ejecución del comando \textit{make}, que generará un archivo binario \textit{tp1}:
 
 \begin{lstlisting}[language=bash]
 $ make
-gcc -g -Wall -o tp0 tp0.c 
+gcc -g -Wall -o tp1 tp1.c 
 $ ls
-tp0.c Makefile tp0 
+tp1.c Makefile tp1 
 \end{lstlisting}
 
 \subsection{Ejecución}
@@ -111,34 +103,25 @@ Una vez obtenido el ejecutable, el mismo se puede ejecutar con el parámetro \te
 \begin{lstlisting}[language=bash]
 $ ./tp0 -h
 Usage:
-	tp0 -h
-	tp0 -V
-	tp0 [options]
+	tp1 -h
+	tp1 -V
+	tp1 [options]
 Options:
 	-V, --version	Print version and quit.
 	-h, --help	Print this information.
 	-i, --input	Location of the input file.
 	-o, --output	Location of the output file.
+  -I, --ibuf-bytes  Byte-count of the input buffer.
+  -O, --obuf-bytes  Byte-count of the output buffer.
 Examples:
-	tp0 -i ~/input -o ~/output
-Usage:
-	tp0 -h
-	tp0 -V
-	tp0 [options]
-Options:
-	-V, --version	Print version and quit.
-	-h, --help	Print this information.
-	-i, --input	Location of the input file.
-	-o, --output	Location of the output file.
-Examples:
-	tp0 -i ~/input -o ~/output
+	tp1 -i ~/input -o ~/output
 
 \end{lstlisting}
 
 O utilizando cualquiera de los parámetros requeridos por el enunciado:
 
 \begin{lstlisting}[language=bash]
-$ echo "somos todos bob" | ./tp0 -o pal.txt
+$ echo "somos todos bob" | ./tp1 -o pal.txt
 $ cat pal.txt
 somos
 bob
@@ -154,14 +137,14 @@ Se puede utilizar el Makefile para correr casos de prueba:
 
 \begin{lstlisting}[language=bash]
 $ make test
-gcc -g -Wall -o tp0 tp0.c 
-./tp0 -i tests/test1.in > tests/test1.res
+gcc -g -Wall -o tp1 tp1.c 
+./tp1 -i tests/test1.in > tests/test1.res
 diff tests/test1.out tests/test1.res
-./tp0 -i tests/test2.in > tests/test2.res
+./tp1 -i tests/test2.in > tests/test2.res
 diff tests/test2.out tests/test2.res
-./tp0 -i tests/test3.in > tests/test3.res
+./tp1 -i tests/test3.in > tests/test3.res
 diff tests/test3.out tests/test3.res
-./tp0 -i tests/test4.in > tests/test4.res
+./tp1 -i tests/test4.in > tests/test4.res
 diff tests/test4.out tests/test4.res
 \end{lstlisting}
 
@@ -170,21 +153,21 @@ diff tests/test4.out tests/test4.res
 \subsubsection{Input}
 
 \begin{lstlisting}[language=bash]
-$ ./tp0 -i /tmp/noexiste.txt
+$ ./tp1 -i /tmp/noexiste.txt
 No se pudo abrir el archivo de entrada: /tmp/noexiste.txt
 \end{lstlisting}
 
 \subsubsection{Output}
 
 \begin{lstlisting}[language=bash]
-$ echo "bob" |./tp0 -o /tmp/
+$ echo "bob" |./tp1 -o /tmp/
 No se pudo abrir el archivo de salida: /tmp/
 \end{lstlisting}
 
 \subsection{Utilizado entrada y salida standard}
 
 \begin{lstlisting}[language=bash]
-$ echo "somos bob hope"|./tp0 
+$ echo "somos bob hope"|./tp1 
 somos
 bob
 \end{lstlisting}
@@ -193,7 +176,7 @@ bob
 
 \begin{lstlisting}[language=bash]
 $ echo "somos bob hope" >> test.txt
-$ ./tp0 -i test.txt -o pal.txt
+$ ./tp1 -i test.txt -o pal.txt
 $ cat pal.txt 
 somos
 bob
@@ -216,7 +199,7 @@ bob
 
 \begin{lstlisting}
 /*
- * tpo.h
+ * tp1.h
  *
  *  Created on: 24 sep. 2017
  *      Author: Diego
