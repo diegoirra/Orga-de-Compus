@@ -28,9 +28,9 @@ void print_version() {
 
 void print_usage() {
 	printf("Usage:\n");
-	printf("\ttp0 -h\n");
-	printf("\ttp0 -V\n");
-	printf("\ttp0 [options]\n");
+	printf("\ttp1 -h\n");
+	printf("\ttp1 -V\n");
+	printf("\ttp1 [options]\n");
 	printf("Options:\n");
 	printf("\t-V, --version\tPrint version and quit.\n");
 	printf("\t-h, --help\tPrint this information.\n");
@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
 			obuffer = atoi(argv[i+1]);
 		}
 		// habría que revisar errores? Si no en los argumentos pasados,
-		// el print usage por defecto por lo menos
+		// que imprimea el print usage por defecto por lo menos
     }
     handle(ifile, ofile, ibuffer, obuffer);
 	return SUCCESS;
