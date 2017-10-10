@@ -2,20 +2,20 @@
 #include <sys/syscall.h>
 #include "is_pal.h"
 
-.text
-.abicalls
-.allign 2
-.global palindrome
-.ent palindrome
+    .text
+    .abicalls
+    .allign 2
+    .global palindrome
+    .ent palindrome
 
 palindrome:
-.fram $fp, 40, ra
-.set noreorder
-.cpload t9
-.set reorder
+    .fram $fp, 40, ra
+    .set noreorder
+    .cpload t9
+    .set reorder
 
     subu    sp,		sp,		40                 #save SRA
-.cprestore 28
+    .cprestore 28
     sw      $fp,	24(sp)                      
     sw      ra,		32(sp)
     move    $fp,	sp                  
@@ -70,7 +70,6 @@ strlen_exit:
 /******************************
 main:
     #entry point
-    la      $a0,    str                         #load string
     jal     palindrome                          #call palindrom
 
     move    $a0,    $v0                         #set a0 to palindrom return value
@@ -80,5 +79,3 @@ main:
     li      $v0,    10                          #set 10 to v0 - as this is system call for exit program
     syscall                                     #make the call
 ********************************/
-.data
-    str: .asciiz "thiispalindrome_emordnilapsiiht"

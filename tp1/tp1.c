@@ -40,7 +40,7 @@ void print_usage() {
 	printf("\t-O, --obuf-bytes\tByte-count of the output buffer\n");
 
 	printf("Examples:\n");
-	printf("\ttp0 -i ~/input -o ~/output\n");
+	printf("\ttp1 -i ~/input -o ~/output\n");
 	exit(SUCCESS);
 }
 
