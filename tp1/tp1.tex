@@ -197,88 +197,11 @@ bob
 	title=\lstname
 }
 
-\begin{lstlisting}
-/*
- * tp1.h
- *
- *  Created on: 24 sep. 2017
- *      Author: Diego
- */
-
-#ifndef TP0_H_
-#define TP0_H_
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <errno.h>
-
-/* Valores posibles de ERRNO para chequear error:
- *
- * www.virtsync.com/c-error-codes-include-errno
- *
- * Valores que puede tomar ERRNO con fopen:
- * http://man7.org/linux/man-pages/man3/fopen.3.html#ERRORS
- *
- * Valores que puede tomar ERRNO con fclose:
- * http://man7.org/linux/man-pages/man3/fclose.3.html#ERRORS
- */
-
-#define SUCCESS 0
-#define ERROR_INPUT_FILE 1
-#define ERROR_OUTPUT_FILE 2
-#define VERSION "1.5"
-#define MAX_LINE_LENGTH 256
-
-/*
- * Imprime la version actual del proyecto
- * Sin retorno.
- */
-void print_version();
-
-/*
- * Imprime los parametros aceptados al ejectuar el programa por linea de comandos
- * Sin retorno.
- */
-void print_usage();
-
-/*
- * Evalua si la palabra pasada por parametro es un palindromo
- * PARAMETRO: puntero a cadena de chars 'word' a evaluar
- * RETORNO: int booleano correspondiente a si la palabra es palindromo:
- * 			1 para true, 0 para false.
- */
-int es_palindromo(char* word);
-
-
-/*
- * Procesa los archivos de entrada y salida pasados por parametros, o asigna los
- * standard inout o output si no fueran dados.
- * PRAMETROS: dos punteros a cadenas de caracteres corespondientes a nombres de archivos
- * 			  de input y output. De ser NULL, se tomara el archivo standard.
- * Sin retorno.
- */
-void handle(char* input_file_name, char* output_file_name);
-
-/*
- * Main para ejecutar el programa. Toma los parametros agregados en la linea de comando.
- * RETORNO: codigo int SUCCES definido como 1.
- */
-int main(int argc, char** argv);
-
-#endif /* TP0_H_ */
-\end{lstlisting}
-
-\newpage
-
-\lstinputlisting[language=C]{tp0.c}
+\lstinputlisting[language=C]{tp1.c}
 
 \newpage
 
 \subsection{Assembly (MIPS)}
-
-El siguiente es un extracto del código assembly generado con los mismos flags de compilación utilizados para generer al ejecutable más \textit{-O0} para evitar cualquier optimización que pueda alterar el resultado (dentro del entorno MIPS emulado mediante el gxemul y la imagen netbsd):
 
 \lstset{
 	breaklines=true,
@@ -287,8 +210,8 @@ El siguiente es un extracto del código assembly generado con los mismos flags d
 
 \begin{lstlisting}[language=bash]
 $ make asm
-gcc -g -Wall -O0 -S tp0.c
-Makefile tp0.c    tp0.s
+gcc -g -Wall -O0 -S tp1.c
+Makefile tp0.c    tp1.s
 \end{lstlisting}
 
 \lstset{
@@ -316,10 +239,11 @@ Makefile tp0.c    tp0.s
   morekeywords={*,...}               % if you want to add more keywords to the set
 }
 
-\lstinputlisting{tp0.s}
+\lstinputlisting{.s}
 
 \section{Conclusiones}
 
-Al final de este proyecto más alla de la simpleza del mismo, pudimos observar los usos de cada distinta herramienta. Observamos como LaTex sirve para escrbir documentos que particularmente incluyan código de programas, puesto que su estructura y posibilidad de personalizar el formato hace más facil su lectura. Vimos como gxemul nos posibilita levantar una imagen virtual de otro sistema operativo dentro de nuestra propia máquina. Esta imagen sea NetBSD que utilizamos para poder trabajar con otras arquitecturas que nuestro sistema operativo no permitía, como en particular assembly y la obtención del código en un '.s'. Cabe resaltar esta particularidad de NetBSD  ya que es la base fundamental para la realización del siguiente trabajo práctico, que constará en trabajar con el código asm de este trabajo, y solo podemos hacerlo mediante la máquina virtual
+Dado que el trabajo no está terminado no hay muchas conclusiones para obtener. Lo que pudimos observar es que entender el lenguaje MIPS no es simple y lleva tiempo y trabajo. Esto se puede ver en que algo que fue muy simple en código C, como obtener palíndromos de un archivo, fue totalmente distinto al pasar a código fuente, en donde nos encontramos con muchas dificultades. A parte de esto, pudimos seguir familiarizandonos con herramientas como LaTex y la máquina virtual de gxemul, la cual nos permite levantar la imagen de NetBSD, sin la cual no podríamos trabajar con código MIPS.
+
 
 \end{document}
