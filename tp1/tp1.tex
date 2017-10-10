@@ -42,19 +42,17 @@ Comenzamos realizando un archivo makefile bastante simple, con algunos flags, pa
 
 	gcc -g -Wall -o tp1 main.c
 
-Luego comenzamos con el código ya propio de lo pedido en la consigna. En primer lugar, armamos el main de manera que distinguiese que opción se había ingresado para ejecutar el programa. Al verificar esto, armamos una función para el comando -h, la cual imprime lo pedido; con el comando -V directamente la versión y, por último, hay una función encargada de verificar cual es el archivo de entrada y cual el de salida del programa. En los primeros dos casos el programa termina inmediatamente después de la impresión.
+Luego comenzamos con el código ya propio de lo pedido en la consigna. En primer lugar, al igual que para el TP0, armamos el main de manera que distinguiese que opción se había ingresado para ejecutar el programa. Al verificar esto, armamos una función para el comando -h, la cual imprime lo pedido; con el comando -V directamente la versión y, por último, hay una función encargada de verificar cual es el archivo de entrada, cual es el de salida del programa y cuales los buffer de entrada y salida. En los primeros dos casos el programa termina inmediatamente después de la impresión.
 
-La parte importante del programa fue implementada en la función handle que recibe los argumentos correspondientes como parámetros si los hubiese, o NULL en caso contrario. Esta función se encarga de procesar los archivos de entrada y salida, o asiganar los inputo o output standard para trabajar si alguno hubiera sido pasado como NULL.
+Luego de esto, se llama a una función handle que recibe los argumentos correspondientes como parámetros si los hubiese, o NULL en caso contrario. Esta función se encarga de procesar los archivos de entrada y salida, o asiganar los inputo o output standard para trabajar si alguno hubiera sido pasado como NULL.
 
 Siguiendo el modelo de implementación incremental, en una primera básica versión esta función requeriría un archivo input existente, e imprimiría el resultado por la consola. De esta forma se simplifica la verificación del correcto funcionamiento del programa.
 
 Finalmente, handle realiza la verificacion del archivo de entrada. Si lo recibido para este mismo es distinto de NULL, lo abre para lectura; en caso contrario, toma como entrada por defecto la terminal (stdin). Luego, de manera similar, verifica el archivo de salida. Si es distinto de NULL, lo abre pero para escritura en este caso y, de manera contraria, si no se le pasó por comando de entrada, utiliza por defecto la terminal como salida (stdout). Cualquier error en la apertura de los archivos se informa mediante la salida estándar stderr.
 
-A continuación se pasó a procesar el archivo de entrada, leyendo linea por linea, para luego procesar cada linea, dividiendola en palabras y tomando las que son palindromos. No pudimos sortear la aleatoriedad de la longitud de la linea del archivo asi que externalizamos el valor maximo de longitud de linea admitido en una definicion en el .h.
+A continuación, se llama a la función is_pal, la cual está codificada en MIPS, tal como pide la consigna. Internamente esta función hace un llamado a getch, en donde se procesa el archivo. Para esto se crea un buffer, utilizando la función mymalloc proporcionada por la cátedra. Luego este buffer se llena mediante una llamada a la syscall read. 
 
-Una dificultad que aparecio en este punto fue sortear los caracteres de fin de linea que decidimos recortar antes de procesar cada palabra (ver funcion chomp).
 
-Luego nos encontramos con la única parte del código no trivial, que era la implementación de la función que determine si la palabra era o no un palíndromo. Leyendo la base del algoritmo, determinamos que la mejor forma de implementarlo era con un ciclo basado en dos puntas, una al principio y una al final de cada palabra, que la recorran hasta encontrarse en el medio, verificando ser iguales en todo momento. Así, el ciclo se rompe si estas puntas son distintas, lo que significa que la palabra no sería un palíndromo.
 
 Ya implementado y probado esto, se terminó la compleción del programa agregando el procesado de entada por consola, y salida en el archivo pasado por parámetro al ejecutar el programa. Este programa sería luego levantado desde le emulación de la maquina virtual con NetBSD que nos permitiría obtener el código assembly de nuestra aplicación, incluido al final de este informe, con el comando de makefile make asm.
 
