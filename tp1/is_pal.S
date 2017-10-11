@@ -16,40 +16,48 @@ palindrome:
     .cpload t9
     .set reorder
 
-    subu    sp,		sp,		40                 #guardo los registros del SRA
+    subu    sp,		sp,		52              #guardo los registros del SRA
     .cprestore 28
     sw      $fp,	24(sp)                      
     sw      ra,		32(sp)
     move    $fp,	sp                  
 
-    sw      a0,  40($fp)                      #save arg1
-    sw      a1,  44($fp)                      #save arg2
-    sw      a2,  48($fp)                      #save arg3
-    sw      a3,  52($fp)                      #save arg4
+    sw      a0,  40($fp)                    #save arg1 ifd
+    sw      a1,  44($fp)                    #save arg2 ibytes
+    sw      a2,  48($fp)                    #save arg3 ofd
+    sw      a3,  52($fp)                    #save arg4 obytes
 
 	jal     getch								
-
+	
+	#???
+	
+	move	t0,		v0						#guardo el retorno de getch
+	
+	move 	a0, 	t0						#el puntero a la linea como argumento.
+	
+	#si el sys_read nos tira por linea, y leemos de a bytes, deberiamos
+	#cargar bytes hasta completar la palabra. Revisando contra los 'separadores'
 
 
 
 	#comienza algoritmo
+	#recibe el puntero a la palabra, por a0
+	
 	#utiliza los tX. REGISTROS A CAMBIAR
     jal     strlen							  
 	move    t0,    v0				   		   #t0 = strlen()
-    subi	t0,	   t0,	  1					   #t0--
-    div     t3,    t0,    2                    #t3 = len / 2
+    subi	t1,	   t0,	  1					   #t1: j = t0-1
+    div     t3,    t0,    2                    #t3 = t0 / 2
     
     li      t2,    1                           #t2:contador i = 1
-    li      v0,    1                           #v0 return value = 1
-    
-    
+    li      v0,    1                           #v0 return value = 1    
 palindrome_for:
     bge     t2,    t3     palindrome_break	   #if i==len/2 (t3): exit
-    lb      t4,    0(a0)                       #word[i]
+    lb      t4,    0(a0)                       #word[i] -> t4
 
     sub     t5,    t0,    t2				   #t5 = t0-t2
     add     t6,    t5,    t1				   #get indice del final.    
-    lb      t7,    0(t6)					   #word[j]
+    lb      t7,    0(t6)					   #word[j] -> t7
 
     beq     t4,    t7,    palindrome_continue   
     li      v0,    0                           #si t4 y t7 no son iguales return =0

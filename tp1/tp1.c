@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include "mymalloc.h"
+#include "is_pal.h"
 
 #define SUCCESS 0
 #define ERROR_INPUT_FILE 1
@@ -42,14 +43,6 @@ void print_usage() {
 	printf("Examples:\n");
 	printf("\ttp1 -i ~/input -o ~/output\n");
 	exit(SUCCESS);
-}
-
-int palindrome(int ifd, size_t ibytes, int ofd, size_t obytes) {
-	char* input_buffer = mymalloc(ibytes);
-	char* output_buffer = mymalloc(obytes);
-	free(input_buffer);
-	free(output_buffer);
-	return SUCCESS;
 }
 
 void handle(char* input_file_name, char* output_file_name, int input_buffer, int output_buffer) {
