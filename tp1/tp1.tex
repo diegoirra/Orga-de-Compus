@@ -50,7 +50,7 @@ Siguiendo el modelo de implementación incremental, en una primera básica versi
 
 Finalmente, handle realiza la verificacion del archivo de entrada. Si lo recibido para este mismo es distinto de NULL, lo abre para lectura; en caso contrario, toma como entrada por defecto la terminal (stdin). Luego, de manera similar, verifica el archivo de salida. Si es distinto de NULL, lo abre pero para escritura en este caso y, de manera contraria, si no se le pasó por comando de entrada, utiliza por defecto la terminal como salida (stdout). Cualquier error en la apertura de los archivos se informa mediante la salida estándar stderr.
 
-A continuación, se llama a la función is_pal, la cual está codificada en MIPS, tal como pide la consigna. Internamente esta función hace un llamado a getch, una función que se encunetra en otro módulo, en donde se procesa el archivo. Para esto se crea un buffer, utilizando la función mymalloc proporcionada por la cátedra. Luego este buffer se llena mediante una llamada a la syscall read.
+A continuación, se llama a la función is\_pal, la cual está codificada en MIPS, tal como pide la consigna. Internamente esta función hace un llamado a getch, una función que se encunetra en otro módulo, en donde se procesa el archivo. Para esto se crea un buffer, utilizando la función mymalloc proporcionada por la cátedra. Luego este buffer se llena mediante una llamada a la syscall read.
 
 Una vez que se tiene el buffer ya cargado, se pasa a leer una por una las palabras del mismo. Para esto nos encontramos con una dificultad que todavía no pudimos resolver, la cual es como separar las palabras en MIPS. Luego, cada una de las palabras debería pasar por la función strlen, la cual devuelve la longitud de ellas. Una vez que se obtiene esta longitud se pasa a un loop en el cual se verifica si la palabra es o no un palíndromo. En caso de que lo sea, se debería hacer una llamada a putch, la cual todavía no se encuentra implementada, pero que internamente debería llenar un buffer de salida y llamar a la syscall write.
 
@@ -70,7 +70,7 @@ Imprime la leyenda de ayuda del programa por consola.
 
 \subsubsection{int palindrome(int ifd, size\_t ibytes, int ofd, size\_t obytes)}
 
-Recibe un input file descriptor, un tamaño de bytes para los buffer de lectura, un output file descriptor y un tamañao de bytes para los buffers de salida. Internamente llama a la función implementada en MIPS is_pal.
+Recibe un input file descriptor, un tamaño de bytes para los buffer de lectura, un output file descriptor y un tamañao de bytes para los buffers de salida. Internamente llama a la función implementada en MIPS is\_pal.
 
 \subsubsection{void handle(char* input\_file\_name, char* output\_file\_name, int input\_buffer, int output\_buffer,)}
 
