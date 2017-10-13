@@ -55,7 +55,6 @@ void handle(char* input_file_name, char* output_file_name, int input_buffer, int
 		if (in_f == NULL) {
 			fprintf(stderr, "ERROR:\nNo se pudo abrir el archivo de entrada: %s\n", input_file_name);
 			perror("Saliendo con error"); //perror imprime el mensaje de error correspondiente al ERRNO
-			//revisar errores más especifico que perror?
 			exit(ERROR_INPUT_FILE);
 		}
 	}else
@@ -115,8 +114,6 @@ int main(int argc, char** argv) {
 		if(strcmp(argv[i], "-O") == 0 && strcmp(argv[i], "--obuf-bytes") == 0){
 			obuffer = atoi(argv[i+1]);
 		}
-		// habría que revisar errores? Si no en los argumentos pasados,
-		// que imprimea el print usage por defecto por lo menos
     }
     handle(ifile, ofile, ibuffer, obuffer);
 	return SUCCESS;
