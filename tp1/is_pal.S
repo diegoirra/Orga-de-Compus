@@ -29,15 +29,17 @@ palindrome:
 
 	jal     getch								
 	
-	#???
-	
-	move	t0,		v0						#guardo el retorno de getch: puntero al buffer?
-	
-	move 	a0, 	t0						#el puntero a la linea como argumento. #se podria hacer todo de una
+	move	t0,		v0						#guardo el retorno de getch: puntero al buffer?	
+	move 	a0, 	t0						#el puntero a la linea como argumento.
+											#se podria hacer todo de una? is that safe?
 	
 	#si el sys_read nos tira por linea, y leemos de a bytes, deberiamos
-	#cargar bytes hasta completar la palabra. Revisando contra los 'separadores'?
-
+	#cargar bytes hasta completar la palabra. Revisando contra los 'separadores'? (tipo ver al final)
+	
+	#CREO QUE lee por tam de buffer, asi que va a haber que buscar la palabra:
+	#recorrer byte a byte hasta encontrar un separador,
+	#siguiendo un indice SIMILAR a strlen, mas hay que controlar contra separadores
+	
 	#comienza algoritmo
 	#recibe el puntero a la palabra, por a0
 		
@@ -71,20 +73,26 @@ palindrome_exit:
 	#imprimir en el buffer de salida
 	#	a2: arg3 ofd
     #   a3: arg4 obytes
+	#	hay que pasarle el puntero a la palabra
+	#	y cantidad de bytes?
 	
 	move a0, a2
 	move a1, a3
 	
 	jal putch
 	#ESTO IMPRIMIO UNA PALABRA? VARIAS?
-	#SALIR?
-	#VOLVER A UN LOOP PARA DETECTAR PALABRAS?
-	#VOLVER A UN LOOP DE CARGAR LINEAS?
+	
+	#hay que hacer que imprima la palabra si es palindromo 
+	#y volver a loop de buscar palabras
+	
+	#y cuando el buffer esta lleno? putch llena el buffer? sys_write escribe directo?
+	#escribe del buffer? hay que llenar el buffer?
 
 palindrome_break:
-	#salida por break v0=0: no es palindromo.
-	#retorna de una
-	#return
+	#salida por break v0=0: no es palindromo.	
+	#retornar al loop de buscar palabras de una
+	
+return_to_main:
     lw      ra,     32(sp)                     
     lw		$fp,	24(sp)
     lw 		gp,		28(sp)
@@ -103,3 +111,6 @@ strlen_loop:
 strlen_exit:
     jr      ra                                 #return
 
+.data
+    separador: .asciiz " " #algo tipo asi?
+	sep2: .asciiz "$"
