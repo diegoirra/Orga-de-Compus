@@ -34,7 +34,7 @@ getch:
 	li			v0,		 SYS_read 					
 	move		a0,		 t1        					# a0: file descriptor number.
 	move		a1,		 t0 	   					# a1: data pointer.
-	move		a2,		 1       					# a2: available space.
+	move		a2,		 t2       					# a2: available space.
 	syscall								
 	
 	# Verificamos el retorno de la llamada a SYS_read: si terminó
@@ -59,7 +59,6 @@ getch:
 	
 	#Y AHORA??? SALIR?
 	
-	
 	#RETURN	
 	lw 		gp,		28(sp)
 	lw 		$fp,	24(sp)
@@ -72,7 +71,8 @@ read_error: #esto sale del programa, quizas hay que hacer otra cosa?
 	li	a0, 1
 	syscall
 
-eof: #ESTO TAMBIEN HAY QUE REVISAR PORQUE EL EJEMPLO LEE DE BYTES
+eof:
+#ESTO TAMBIEN HAY QUE REVISAR PORQUE EL EJEMPLO LEE DE BYTES
 # Y NOSOTROS LLENAMOS UN BUFFER 
 	# Finalmente, volvemos al sistema operativo devolviendo un
 	# código de retorno nulo.
@@ -104,14 +104,24 @@ putch:
     sw      $fp,	24(sp)                      
     sw      ra,		32(sp)
     move    $fp,	sp                  
-
-	#FALTA IMPLEMENTAR
+	
+	sw      a0,		40($fp)                     #guardo primer argumento: file descriptor    
+    sw      a1,     44($fp)					    #guardo segundo argumento: tam del buffer
+         
+    jal		mymalloc    
+    move 	t0, 	v0							#ptr retorno de mymalloc
+	
+	lw 		a0,		40($fp)						#re-cargo los argumentos
+	lw		a1,		44($fp)
+	move 	t1, 	a0							#guardo el file descriptor 
+	move 	t2, 	a1							#guardo buffer tam 
+	
 	# salida estándar, detectando errores. Ver más abajo.
 	#
-	li	v0, SYS_write # ver dentro de <sys/syscall.h>.
-	li	a0, 1         # a0: file descriptor number.
-	la	a1, 28(sp)    # a1: output data pointer.
-	li	a2, 1         # a2: output byte size.
+	li	v0, SYS_write
+	li	a0, t1         # a0: file descriptor number.
+	la	a1, t0		   # a1: output data pointer.
+	li	a2, t2         # a2: output byte size.
 	syscall
 
 	# Revisamos el retorno de SYS_write: si $a3 es no-nulo, quiere
@@ -120,7 +130,7 @@ putch:
 	# información que ha sido enviada.
 	#
 	bne	a3, zero, write_error
-	li	t0, 1
+	li	t0, t2
 	bne	v0, t0, write_error
 	
 write_error: #esto sale del programa, quizas hay que hacer otra cosa?

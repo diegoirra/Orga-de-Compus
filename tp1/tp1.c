@@ -54,7 +54,8 @@ void handle(char* input_file_name, char* output_file_name, int input_buffer, int
 		in_f = fopen( input_file_name, "r" );
 		if (in_f == NULL) {
 			fprintf(stderr, "ERROR:\nNo se pudo abrir el archivo de entrada: %s\n", input_file_name);
-			perror("Saliendo con error"); //revisar errores más especifico que perror?
+			perror("Saliendo con error"); //perror imprime el mensaje de error correspondiente al ERRNO
+			//revisar errores más especifico que perror?
 			exit(ERROR_INPUT_FILE);
 		}
 	}else

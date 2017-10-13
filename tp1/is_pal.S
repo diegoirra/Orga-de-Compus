@@ -31,19 +31,16 @@ palindrome:
 	
 	#???
 	
-	move	t0,		v0						#guardo el retorno de getch
+	move	t0,		v0						#guardo el retorno de getch: puntero al buffer?
 	
-	move 	a0, 	t0						#el puntero a la linea como argumento.
+	move 	a0, 	t0						#el puntero a la linea como argumento. #se podria hacer todo de una
 	
 	#si el sys_read nos tira por linea, y leemos de a bytes, deberiamos
-	#cargar bytes hasta completar la palabra. Revisando contra los 'separadores'
-
-
+	#cargar bytes hasta completar la palabra. Revisando contra los 'separadores'?
 
 	#comienza algoritmo
 	#recibe el puntero a la palabra, por a0
-	
-	#utiliza los tX. REGISTROS A CAMBIAR
+		
     jal     strlen							  
 	move    t0,    v0				   		   #t0 = strlen()
     subi	t1,	   t0,	  1					   #t1: j = t0-1
@@ -52,7 +49,7 @@ palindrome:
     li      t2,    1                           #t2:contador i = 1
     li      v0,    1                           #v0 return value = 1    
 palindrome_for:
-    bge     t2,    t3     palindrome_break	   #if i==len/2 (t3): exit
+    bge     t2,    t3     palindrome_exit	   #if i==len/2: exit (con v0=1)
     lb      t4,    0(a0)                       #word[i] -> t4
 
     sub     t5,    t0,    t2				   #t5 = t0-t2
@@ -60,7 +57,7 @@ palindrome_for:
     lb      t7,    0(t6)					   #word[j] -> t7
 
     beq     t4,    t7,    palindrome_continue   
-    li      v0,    0                           #si t4 y t7 no son iguales return =0
+    li      v0,    0                           #if t4 != t7: return value=0
     j       palindrom_break					   #break
 
 palindrome_continue:
@@ -68,8 +65,27 @@ palindrome_continue:
     addi    t2,    t2,    1                    #i++
     j       palindrom_for
 
+palindrome_exit:
+	#salida correcta del ciclo con v0=1 => es palindromo
+	
+	#imprimir en el buffer de salida
+	#	a2: arg3 ofd
+    #   a3: arg4 obytes
+	
+	move a0, a2
+	move a1, a3
+	
+	jal putch
+	#ESTO IMPRIMIO UNA PALABRA? VARIAS?
+	#SALIR?
+	#VOLVER A UN LOOP PARA DETECTAR PALABRAS?
+	#VOLVER A UN LOOP DE CARGAR LINEAS?
+
 palindrome_break:
-    lw      ra,     32(sp)                     #return
+	#salida por break v0=0: no es palindromo.
+	#retorna de una
+	#return
+    lw      ra,     32(sp)                     
     lw		$fp,	24(sp)
     lw 		gp,		28(sp)
     addu    sp,    	sp,    40                   
