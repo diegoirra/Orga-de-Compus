@@ -8,7 +8,7 @@
 .ent getch
 
 getch:
-    .fram $fp, 40, ra
+    .frame $fp, 40, ra
     .set noreorder
     .cpload t9
     .set reorder

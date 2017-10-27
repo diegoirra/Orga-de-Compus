@@ -4,14 +4,13 @@
 
     .text
     .abicalls
-    .allign 2
     .global palindrome
     .ent palindrome
 	.extern getch
 	.extern putch
 	
 palindrome:
-    .fram $fp, 40, ra
+    .frame $fp, 40, ra
     .set noreorder
     .cpload t9
     .set reorder
@@ -45,13 +44,13 @@ palindrome:
 		
     jal     strlen							  
 	move    t0,    v0				   		   #t0 = strlen()
-    subi	t1,	   t0,	  1					   #t1: j = t0-1
+    subu	t1,	   t0,	  1					   #t1: j = t0-1
     div     t3,    t0,    2                    #t3 = t0 / 2
     
     li      t2,    1                           #t2:contador i = 1
     li      v0,    1                           #v0 return value = 1    
 palindrome_for:
-    bge     t2,    t3     palindrome_exit	   #if i==len/2: exit (con v0=1)
+    beq     t2,    t3     palindrome_exit	   #if i==len/2: exit (con v0=1)
     lb      t4,    0(a0)                       #word[i] -> t4
 
     sub     t5,    t0,    t2				   #t5 = t0-t2
@@ -111,6 +110,7 @@ strlen_loop:
 strlen_exit:
     jr      ra                                 #return
 
+.end palindrome
 .data
     separador: .asciiz " " #algo tipo asi?
 	sep2: .asciiz "$"
