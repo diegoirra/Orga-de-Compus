@@ -14,7 +14,7 @@
 
 int main(int argc, char** argv) {
 
-    printf("%d",palindrome());
+    printf("%d \n",palindrome());
 
     return SUCCESS;
 }

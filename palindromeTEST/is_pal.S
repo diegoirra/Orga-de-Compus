@@ -21,21 +21,23 @@ palindrome:
 	
 	la	t0, palabra
 	move 	a0, 	t0
-    jal     strlen
 
+    jal     strlen
 	move    t0,    v0				   		   #t0 = strlen()
-    subu	t1,	   t0,	  1					   #t1: j = t0-1
-    div     t3,    t0,    2                    #t3 = t0 / 2
     
     li      t2,    1                           #t2:contador i = 1
     li      v0,    1                           #v0 return value = 1
     la 		a0,    palabra
+    move	t1,    a0
+
+    div     t3,    t0,    2                   #t3= strlen/2
+    addi    t3,    t3,    1   				  #t3++ (por si es impar)
 palindrome_for:
-    beq     t2,    t3,     palindrome_exit	   #if i==len/2: exit (con v0=1)
+    bge     t2,    t3,     palindrome_exit	   #if i==len/2: exit (con v0=1)
     lb      t4,    0(a0)                       #word[i] -> t4
 
     sub     t5,    t0,    t2				   #t5 = t0-t2
-    add     t6,    t5,    t1				   #get indice del final.    
+    add     t6,    t5,    t1				   #get address indice del final.
     lb      t7,    0(t6)					   #word[j] -> t7
 
     beq     t4,    t7,    palindrome_continue
@@ -75,4 +77,4 @@ strlen_exit:
 
 .end palindrome
 .data
-	palabra: .asciiz "jajaj"
+	palabra: .asciiz "ispal_lapsi"
