@@ -35,7 +35,7 @@ putch:
 	# información que ha sido enviada.
 	#
 	bne		a3, zero, write_error
-	bne		v0, t2, write_error
+	bne		v0, t2, write_error #esto no debe ser asi, debe haber un loop hasta que escriba todo, a excepcion de que se devuelva -1
 	
 write_error:
 	li	v0, -1

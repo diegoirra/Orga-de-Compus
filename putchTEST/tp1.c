@@ -9,13 +9,14 @@
 #include "putch.h"
 
 #define SUCCESS 0
+#define SALIDA_ESTANDAR 1
 
 
 int main(int argc, char** argv) {
 
 	char* buf = "this is a putch test\n";
 
-	int v0 = putch(1, 21, buf);
+	int v0 = putch(SALIDA_ESTANDAR, 21, buf);
 
 	printf("putch result: %d\n", v0);
 
