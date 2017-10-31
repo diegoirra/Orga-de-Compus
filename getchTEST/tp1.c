@@ -10,7 +10,7 @@
 #define SUCCESS 0
 #define ERROR_INPUT_FILE 1
 #define ERROR_OUTPUT_FILE 2
-#define BUFFER_TAM 20
+#define BUFFER_TAM 4
 
 
 int main(int argc, char** argv) {
@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
 
     printf("getch result: %d\n", v0);
 
-    free(buffer);
+//    free(buffer);
 
     return SUCCESS;
 }

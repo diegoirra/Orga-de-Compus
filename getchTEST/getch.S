@@ -48,9 +48,8 @@ getch:
 	# otros valores, los tratamos como error.
 	#
 	beq	v0, zero, eof 
-	bne	v0, t2, read_error
+	bne	v0, t1, read_error_tam
 	
-	#Y AHORA??? SALIR?
 	
 return:
 	lw 		gp,		28(sp)
@@ -60,22 +59,16 @@ return:
     jr      ra      
 
 read_error:
-#esto sale del programa, quizas hay que hacer otra cosa?
 	li	v0, -1
+	b return
+
+read_error_tam:
+	li	v0, -2
 	b return
 
 
 eof:
-#ESTO TAMBIEN HAY QUE REVISAR PORQUE EL EJEMPLO LEE DE BYTES
-# Y NOSOTROS LLENAMOS UN BUFFER 
-	# Finalmente, volvemos al sistema operativo devolviendo un
-	# código de retorno nulo.
-	#
-	# Primero, restauramos los valores de los registros relevantes,
-	# y luego destruímos nuestro stack frame.
-	#
 	move	v0, zero
-	move	sp, $fp
 	j return
 	
 	.end getch
