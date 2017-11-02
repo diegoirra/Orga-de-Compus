@@ -22,7 +22,8 @@ int main(int argc, char** argv) {
 
     printf("getch result: %d\n", v0);
 
-//    free(buffer);
+    printf("%s\n", buffer);
+
 
     return SUCCESS;
 }

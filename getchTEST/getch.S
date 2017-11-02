@@ -19,15 +19,15 @@ getch:
     sw      ra,		32(sp)
     move    $fp,	sp                  
 
-	move 	t1, 	a0							#guardo el file descriptor 
-	move 	t2, 	a1							#guardo buffer tam
-	move	t3,		a2							#guardo puntero a buffer
+	move 	s1, 	a0							#guardo el file descriptor
+	move 	s2, 	a1							#guardo buffer tam
+	move	s3,		a2							#guardo puntero a buffer
 	
 	#preparo syscall
-	li			v0,		 SYS_read 					
-	move		a0,		 t1        					# a0: file descriptor number.
-	move		a1,		 t3 	   					# a1: data pointer.
-	move		a2,		 t2       					# a2: available space.
+	li			v0,		 SYS_read
+	move		a0,		 s1        					# a0: file descriptor number.
+	move		a1,		 s3 	   					# a1: data pointer.
+	move		a2,		 s2       					# a2: available space.
 	syscall								
 	
 	# Verificamos el retorno de la llamada a SYS_read: si terminó
@@ -48,7 +48,7 @@ getch:
 	# otros valores, los tratamos como error.
 	#
 	beq	v0, zero, eof 
-	bne	v0, t1, read_error_tam
+	bne	v0, s2, read_error_tam
 	
 	
 return:
