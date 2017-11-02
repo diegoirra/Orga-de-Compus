@@ -19,14 +19,14 @@ putch:
     sw      ra,		32(sp)
     move    $fp,	sp                  
 	
-	move      t0,		a0                      #guardo primer argumento: file descriptor
-    move      t1,		a1					    #guardo segundo argumento: tam del buffer
-    move	  t2,		a2						#save data pointer
+	move      s0,		a0                      #guardo primer argumento: file descriptor
+    move      s1,		a1					    #guardo segundo argumento: tam del buffer
+    move	  s2,		a2						#save data pointer
 	
 	li	v0, SYS_write
-	move	a0, t0         # a0: file descriptor number.
-	move	a1, t2		   # a1: output data pointer.
-	move	a2, t1         # a2: output byte size.
+	move	a0, s0         # a0: file descriptor number.
+	move	a1, s2		   # a1: output data pointer.
+	move	a2, s1         # a2: output byte size.
 	syscall
 
 	# Revisamos el retorno de SYS_write: si $a3 es no-nulo, quiere
@@ -35,7 +35,7 @@ putch:
 	# información que ha sido enviada.
 	#
 	bne		a3, zero, write_error
-	bne		v0, t1, write_error
+	bne		v0, s1, write_error_tam
 
 return:
 	lw 		gp,		28(sp)
@@ -48,5 +48,10 @@ return:
 write_error:
 	li	v0, -1
 	j return
+
+write_error_tam:
+	li	v0, -2
+	j return
+
 
 .end putch
