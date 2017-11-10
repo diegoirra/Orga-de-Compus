@@ -9,6 +9,6 @@
  * 			   de datos desde y hacia el kernel de NetBSD
  * RETORNO: int booleano correspondiente al exito de la funcion.
  */
-int palindrome();
+int palindrome(char * w);
 
 #endif

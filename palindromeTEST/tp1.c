@@ -14,7 +14,38 @@
 
 int main(int argc, char** argv) {
 
-    printf("%d \n",palindrome());
+	char* word = "bob";
+    printf("is_pal: %s? %d \n", word, palindrome(word));
+
+    word = "notapal";
+    printf("is_pal: %s? %d \n", word, palindrome(word));
+
+    word = "palWlap";
+    printf("is_pal: %s? %d \n", word, palindrome(word));
+
+    word = "PALwlap";
+    printf("is_pal: %s? %d \n", word, palindrome(word));
+
+    word = "pal_lap";
+    printf("is_pal: %s? %d \n", word, palindrome(word));
+
+    word = "pal-lap";
+    printf("is_pal: %s? %d \n", word, palindrome(word));
+
+    word = "1pal-LAP1";
+    printf("is_pal: %s? %d \n", word, palindrome(word));
+
+    word = "1_pal-LAP_1";
+    printf("is_pal: %s? %d \n", word, palindrome(word));
+
+    word = "1pa-wew-AP1";
+    printf("is_pal: %s? %d \n", word, palindrome(word));
+
+    word = "1_pal-LAP_1";
+    printf("is_pal: %s? %d \n", word, palindrome(word));
+
+    word = "1_pal-LBP_1";
+    printf("is_pal: %s? %d \n", word, palindrome(word));
 
     return SUCCESS;
 }

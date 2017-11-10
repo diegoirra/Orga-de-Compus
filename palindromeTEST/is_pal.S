@@ -19,15 +19,14 @@ palindrome:
     sw      ra,		32(sp)
     move    $fp,	sp
 	
-	la	t0, palabra
-	move 	a0, 	t0
+	sw		a0, 	52(sp)					 #guardo el argumento
 
     jal     strlen
-	move    t0,    v0				   		   #t0 = strlen()
+	move    t0,     v0				   		   #t0 = strlen()
+	lw		a0,		52(sp)						#re cargo el argumento
     
     li      t2,    1                           #t2:contador i = 1
     li      v0,    1                           #v0 return value = 1
-    la 		a0,    palabra
     move	t1,    a0
 
     div     t3,    t0,    2                   #t3= strlen/2
@@ -40,8 +39,15 @@ palindrome_for:
     add     t6,    t5,    t1				   #get address indice del final.
     lb      t7,    0(t6)					   #word[j] -> t7
 
-    beq     t4,    t7,    palindrome_continue
-    li      v0,    0                           #if t4 != t7: return value=0
+    beq     t4,    t7,    palindrome_continue	#if t4==t7
+
+    add		t8,		t7, 32
+    beq     t4,    t8,    palindrome_continue	#if t4==caps(t7)
+
+    add		t8,		t4, 32
+    beq     t8,    t7,    palindrome_continue	#if caps(t4)==t7
+
+    li      v0,    0                           #else ==> t4 != t7: return value=0
     j       palindrome_break					   #break
 
 palindrome_continue:
@@ -76,5 +82,3 @@ strlen_exit:
     jr      ra                                 #return
 
 .end palindrome
-.data
-	palabra: .asciiz "ispal_lapsi"
