@@ -14,12 +14,8 @@
 #define ERROR_OUTPUT_FILE 2
 #define BUFFER_TAM 4
 
+void print_result(char* buf, int v0){
 
-int main(int argc, char** argv) {
-
-	char* buf = "this is a getword test\n";
-
-	int v0 = getwordlen(buf);
 
 	printf("word detected: \n");
 
@@ -28,6 +24,37 @@ int main(int argc, char** argv) {
 		printf("%c", buf[i]);
 	}
 	printf("\n");
+	printf("%d\n", v0);
+	printf("\n");
+}
+
+
+int main(int argc, char** argv) {
+
+	char* buf = "thisnigga is a getword test\n";
+	int v0 = getwordlen(buf);
+
+	print_result(buf, v0);
+
+	buf = "Detect thisw ord";
+	v0 = getwordlen(buf);
+	print_result(buf, v0);
+
+	buf = "te-st thisw ord";
+	v0 = getwordlen(buf);
+	print_result(buf, v0);
+
+	buf = "De_test thisw ord";
+	v0 = getwordlen(buf);
+	print_result(buf, v0);
+
+	buf = "Test0123 thisw ord";
+	v0 = getwordlen(buf);
+	print_result(buf, v0);
+
+	buf = "Test23 thisw ord";
+	v0 = getwordlen(buf);
+	print_result(buf, v0);
 
     return SUCCESS;
 }

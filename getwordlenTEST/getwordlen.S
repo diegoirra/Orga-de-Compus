@@ -21,8 +21,14 @@ getwordlen:
 	move 	t1, 	a0							#guardo el puntero
 
 #ascii codes
+#A = 65
 #a = 97
+#Z = 90
 #z = 122
+#ascii 0 = 48
+#9 = 57
+#- = 45
+#_ = 95
 
     li		v0,    0                          #return value len=0
 strlen_loop:
@@ -33,8 +39,18 @@ strlen_loop:
     j       strlen_loop
 
 checkchar:
-	blt		t0, 97,		 return
-	bgt		t0, 122,	 return
+	beq		t0, 95,		back	#if _
+	beq		t0, 45,		back	#if -
+
+	bgt		t0, 122,	return	#if over z
+	bgt		t0, 96, 	back	#if over a, below z
+
+	blt		t0, 48,		return	#if below 0
+	blt		t0, 57,		back	#if below 9, over 0
+
+	blt		t0, 65,		return	#if below A
+	blt		t0, 90,		back	#if below Z, over A
+back:
 	jr		ra
 
 	
