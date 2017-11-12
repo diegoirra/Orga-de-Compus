@@ -8,15 +8,16 @@
 .ent getch
 
 getch:
-    .frame $fp, 40, ra
+    .frame $fp, 16, ra
     .set noreorder
     .cpload t9
     .set reorder
 
-    subu    sp,		sp,		44                	#save SRA
+    subu    sp,		sp,		16                	#save SRA
     .cprestore 28
-    sw      $fp,	24(sp)                      
-    sw      ra,		32(sp)
+    sw		gp, 	12(sp)
+	sw		$fp, 	8(sp)                     
+    sw      ra,		4(sp)
     move    $fp,	sp                  
 
 	move 	s1, 	a0							#guardo el file descriptor
@@ -52,10 +53,10 @@ getch:
 	
 	
 return:
-	lw 		gp,		28(sp)
-	lw 		$fp,	24(sp)
-	lw 		ra,		32(sp) 
-	addu    sp,    	sp,    40                   
+	lw 		gp,		12(sp)
+	lw 		$fp,	8(sp)
+	lw 		ra,		4(sp) 
+	addu    sp,    	sp,    16                  
     jr      ra      
 
 read_error:

@@ -8,22 +8,23 @@
     .ent palindrome
 	
 palindrome:
-    .frame $fp, 40, ra
+    .frame $fp, 16, ra
     .set noreorder
     .cpload t9
     .set reorder
 
-    subu    sp,		sp,		52              #guardo los registros del SRA
+    subu    sp,		sp,		16              #guardo los registros del SRA
     .cprestore 28
-    sw      $fp,	24(sp)                      
-    sw      ra,		32(sp)
-    move    $fp,	sp
+    sw      gp,     12(sp)
+    sw      $fp,    8(sp)                     
+    sw      ra,     4(sp)
+    move    $fp,    sp   
 	
-	sw		a0, 	52(sp)					 #guardo el argumento
+	sw		a0, 	16(sp)					 #guardo el argumento
 
     jal     strlen
 	move    t0,     v0				   		   #t0 = strlen()
-	lw		a0,		52(sp)						#re cargo el argumento
+	lw		a0,		16(sp)						#re cargo el argumento
     
     li      t2,    1                           #t2:contador i = 1
     li      v0,    1                           #v0 return value = 1
@@ -63,11 +64,11 @@ palindrome_break:
 	#retornar al loop de buscar palabras de una
 	
 return_to_main:
-    lw      ra,     32(sp)                     
-    lw		$fp,	24(sp)
-    lw 		gp,		28(sp)
-    addu    sp,    	sp,    40                   
-    jr      ra                                
+    lw      gp,     12(sp)
+    lw      $fp,    8(sp)
+    lw      ra,     4(sp) 
+    addu    sp,     sp,    16                  
+    jr      ra                                 
 
 strlen:
     li		v0,    0                          #return value len=0

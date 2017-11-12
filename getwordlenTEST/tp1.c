@@ -7,7 +7,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include "getwordlen.h"
-#include "putch.h"
 
 #define SUCCESS 0
 #define ERROR_INPUT_FILE 1

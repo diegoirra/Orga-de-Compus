@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 
 	char* buf = "this is a putch test\n";
 
-	int v0 = putch(1, 20, buf);
+	int v0 = putch(1, 21, buf);
 
 	printf("putch result: %d\n", v0);
 

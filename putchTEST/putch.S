@@ -8,16 +8,17 @@
 .ent	putch
 
 putch:
-    .frame $fp, 40, ra
+    .frame $fp, 16, ra
     .set noreorder
     .cpload t9
     .set reorder
 
-    subu    sp,		sp,		44                	#save SRA
+    subu    sp,		sp,		16                	#save SRA
     .cprestore 28
-    sw      $fp,	24(sp)                      
-    sw      ra,		32(sp)
-    move    $fp,	sp                  
+    sw		gp, 	12(sp)
+	sw		$fp, 	8(sp)                     
+    sw      ra,		4(sp)
+    move    $fp,	sp               
 	
 	move      s0,		a0                      #guardo primer argumento: file descriptor
     move      s1,		a1					    #guardo segundo argumento: tam del buffer
@@ -38,11 +39,11 @@ putch:
 	bne		v0, s1, write_error_tam
 
 return:
-	lw 		gp,		28(sp)
-	lw 		$fp,	24(sp)
-	lw 		ra,		32(sp)
-	addu    sp,    	sp,    40
-    jr      ra
+	lw 		gp,		12(sp)
+	lw 		$fp,	8(sp)
+	lw 		ra,		4(sp) 
+	addu    sp,    	sp,    16                  
+    jr      ra      
 
 
 write_error:
