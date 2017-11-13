@@ -101,21 +101,22 @@ int main(int argc, char** argv) {
         	print_usage();
 			exit(SUCCESS);
         }
-		if(strcmp(argv[i], "-i") == 0 && strcmp(argv[i], "--input") == 0){
+		if(strcmp(argv[i], "-i") == 0 || strcmp(argv[i], "--input") == 0){
 			if (strcmp(argv[i+1],"-")!=0)
 				ifile = argv[i+1];
 		}
-		if(strcmp(argv[i], "-o") == 0 && strcmp(argv[i], "--output") == 0){
+		if(strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0){
 			if (strcmp(argv[i+1],"-")!=0)
 				ofile = argv[i+1];
 		}
-		if(strcmp(argv[i], "-I") == 0 && strcmp(argv[i], "--ibuf-bytes") == 0){
+		if(strcmp(argv[i], "-I") == 0 || strcmp(argv[i], "--ibuf-bytes") == 0){
 			ibuffer = atoi(argv[i+1]);
 		}
-		if(strcmp(argv[i], "-O") == 0 && strcmp(argv[i], "--obuf-bytes") == 0){
+		if(strcmp(argv[i], "-O") == 0 || strcmp(argv[i], "--obuf-bytes") == 0){
 			obuffer = atoi(argv[i+1]);
 		}
     }
+    printf("Parameters: %s, %s, %d, %d\n",ifile, ofile, ibuffer, obuffer);
     handle(ifile, ofile, ibuffer, obuffer);
 	return SUCCESS;
 }
