@@ -19,16 +19,15 @@ strcopy:
     sw      ra,     4(sp)
     move    $fp,    sp
 
-	#a0 = tam
+	#a0 = bytes to be copied
 	#a1 = pointer src
 	#a2 = pointer dst
 
 	li 		v0,		0							#return value: bytes copied
 loop:
-
-	lb		t1,		0(a1)						#cargo byte en t1
-	beqz	t1,		return						#if null: return
-	sb		t1,		0(a2)						#else: lo guardo en dst
+	beq		v0,		a0,		return				#if B copied == B to be: return
+	lb		t1,		0(a1)						#else:cargo byte en t1
+	sb		t1,		0(a2)						#	  lo guardo en dst
 
 	addi	a1,		a1,		1
 	addi	a2,		a2,		1					#next index
