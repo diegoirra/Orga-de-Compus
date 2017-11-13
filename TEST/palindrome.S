@@ -1,13 +1,10 @@
 #include <mips/regdef.h>
 #include <sys/syscall.h>
-#include "palindrome.h"
 
     .text
     .abicalls
     .global palindrome
     .ent palindrome
-	.extern getch
-    .extern mymalloc
 	
 palindrome:
     .frame $fp, 48, ra
@@ -41,6 +38,8 @@ palindrome:
     move    a2,     t0
 	jal     getch								
 	jal    return_to_main
+
+
 
 return_to_main:
     lw      ra,     36(sp)                     
