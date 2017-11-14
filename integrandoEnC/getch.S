@@ -14,7 +14,8 @@ getch:
     .set reorder
 
     subu    sp,		sp,		16                	#save SRA
-    .cprestore 12
+    .cprestore 28
+    sw		gp, 	12(sp)
 	sw		$fp, 	8(sp)                     
     sw      ra,		4(sp)
     move    $fp,	sp                  
