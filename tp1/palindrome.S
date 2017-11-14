@@ -45,11 +45,6 @@ palindrome:
     li      s7,     0                       #en s7 mantengo cuantos bytes ya guarde en buf de salida
 
 get_words:                                  #loop para obtener palabras del archivo
-    move    a0,     s4                      #limpio buffer de entrada
-    jal     save_regs
-    jal     clear_buf
-    jal     restore_regs
-
     move    a0,     s0                      #input file primer parametro del getch
     move    a1,     s1                      #tam buffer segundo parametro del getch
     move    a2,     s4                      #puntero al buffer tercer parametro de getch
@@ -68,11 +63,6 @@ get_next_len:                               #loop para obtener len de la siguien
     jal     getwordlen
     jal     restore_regs                    #restauro regs s
 
-    move    a0,     s6                      #limpio buffer interno
-    jal     save_regs
-    jal     clear_buf
-    jal     restore_regs
-
     move    a0,     v0                      #guardo resultado como primer param de strcopy
     move    a1,     s4                      #buffer a copiar, segundo parametro
     move    a2,     s6                      #buffer donde debe copiar, tercer parametro
@@ -86,7 +76,6 @@ get_next_len:                               #loop para obtener len de la siguien
     jal     save_regs                       #guardo los regs s
     jal     is_pal
     jal     restore_regs                    #restauro regs s
-
     beqz    v0,     get_next_len            #si no es pal retorno al main
 
 save_words:                                 #guardar palabras a imprimir en buffer de salida
@@ -102,14 +91,9 @@ save_words:                                 #guardar palabras a imprimir en buff
     jal     strcopy                         #copio la palabra en el buffer de salida
     jal     restore_regs                    #restauro regs s
     addu    s5,     v0,     s5              #adelanto buffer de salida
-    la      t0,     newline
-    sb      t0,     0(s5)
-    addi    s5,     s5,     1
 
     addu    s7,     v0,     s7              #sumo bytes copiados a s7
-    addi    s7,     s7,     1
     bgt     s7,     s3,     print           #si llegue a la cant de bytes del buf de salida imprimo
-
 
 print:
     move    a0,     s2                      #fd output file primer parametro del putch
@@ -118,11 +102,6 @@ print:
     jal     save_regs                       #guardo los regs s
     jal     putch    
     jal     restore_regs                    #restauro regs s
-
-    lw      a0,     64($fp)                 #luego de imprimir limpio buffer de salida
-    jal     save_regs
-    jal     clear_buf
-    jal     restore_regs
 
     jal     get_next_len
 
@@ -176,6 +155,3 @@ return:
     jr      ra                
 
 .end palindrome
-
-.data
-    newline: .asciiz "\n"
