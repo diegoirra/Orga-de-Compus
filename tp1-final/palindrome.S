@@ -61,7 +61,7 @@ get_words:                                  #loop para obtener palabras del arch
 
 get_next_len:                               #loop para obtener len de la siguiente palabra
     lb      t0,     0(s4)
-    beqz    t0,     get_words               #se llego al final del buffer de entrada, hay que cargarlo nuevamente TODO: VER SI ES BLTZ
+    beqz    t0,     get_words               #se llego al final del buffer de entrada, hay que cargarlo nuevamente
 
     move    a0,     s4                      #vamos a obtener tam de la proxima palabra
     jal     save_regs                       #guardo los regs s
@@ -109,7 +109,7 @@ save_words:                                 #guardar palabras a imprimir en buff
     addu    s7,     v0,     s7              #sumo bytes copiados a s7
     addi    s7,     s7,     1
     bgt     s7,     s3,     print           #si llegue a la cant de bytes del buf de salida imprimo
-
+    #TODO: deberia hacer b get_next_len pero de esa manera se traba y no imprime nada
 
 print:
     move    a0,     s2                      #fd output file primer parametro del putch
@@ -124,7 +124,7 @@ print:
     jal     clear_buf
     jal     restore_regs
 
-    jal     get_next_len
+    b       get_next_len
 
 end:
     move    a0,     s2                      #fd output file primer parametro del putch
@@ -134,7 +134,7 @@ end:
     jal     putch    
     jal     restore_regs                    #restauro regs s
     
-    jal     return
+    b       return
 
 
 save_regs:

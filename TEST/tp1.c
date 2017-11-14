@@ -70,8 +70,7 @@ void handle(char* input_file_name, char* output_file_name, int input_buffer, int
 	} else
 		out_f = stdout;
 
-	int result = palindrome(fileno(in_f), input_buffer, fileno(out_f), output_buffer);
-	printf("%d\n", result);
+	palindrome(fileno(in_f), input_buffer, fileno(out_f), output_buffer);
 
 	if(in_f != NULL && in_f != stdin) {
 		fclose(in_f);
@@ -116,7 +115,7 @@ int main(int argc, char** argv) {
 			obuffer = atoi(argv[i+1]);
 		}
     }
-    printf("Parameters: %s, %s, %d, %d\n",ifile, ofile, ibuffer, obuffer);
+   
     handle(ifile, ofile, ibuffer, obuffer);
 	return SUCCESS;
 }
