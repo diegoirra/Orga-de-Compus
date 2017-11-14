@@ -55,5 +55,9 @@ int main(int argc, char** argv) {
 	v0 = getwordlen(buf);
 	print_result(buf, v0);
 
+	buf = "";
+	v0 = getwordlen(buf);
+	print_result(buf, v0);
+
     return SUCCESS;
 }

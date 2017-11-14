@@ -13,8 +13,7 @@ strcopy:
     .set reorder
 
     subu    sp,     sp,     16                  #save SRA
-    .cprestore 28
-    sw      gp,     12(sp)
+    .cprestore 12
     sw      $fp,    8(sp)
     sw      ra,     4(sp)
     move    $fp,    sp

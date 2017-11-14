@@ -45,22 +45,23 @@ palindrome:
     li      s7,     0                       #en s7 mantengo cuantos bytes ya guarde en buf de salida
 
 get_words:                                  #loop para obtener palabras del archivo
-    beqz    s0,     end                     #si es el final del archivo pasa a imprimir lo que falto
-
     move    a0,     s0                      #input file primer parametro del getch
     move    a1,     s1                      #tam buffer segundo parametro del getch
     move    a2,     s4                      #puntero al buffer tercer parametro de getch
     jal     save_regs                       #guardo los regs s
     jal     getch                       
     jal     restore_regs                    #restauro regs s
+    beqz    v0,     end
     addu    s0,     v0,     s0              #adelanto el puntero a fd
 
 get_next_len:                               #loop para obtener len de la siguiente palabra
+    lb      t0,     0(s4)
+    beqz    t0,     get_words               #se llego al final del buffer de entrada, hay que cargarlo nuevamente TODO: VER SI ES BLTZ
+
     move    a0,     s4                      #vamos a obtener tam de la proxima palabra
     jal     save_regs                       #guardo los regs s
     jal     getwordlen
     jal     restore_regs                    #restauro regs s
-    beqz    v0,     get_words               #si el len es 0, significa que se llegó al final del buffer, lo cargo de nuevo
 
     move    a0,     v0                      #guardo resultado como primer param de strcopy
     move    a1,     s4                      #buffer a copiar, segundo parametro
@@ -75,7 +76,7 @@ get_next_len:                               #loop para obtener len de la siguien
     jal     save_regs                       #guardo los regs s
     jal     is_pal
     jal     restore_regs                    #restauro regs s
-    beqz    v0,     return_to_main          #si no es pal retorno al main //TODO: QUE VAYA A GET_NEXT_LEN
+    beqz    v0,     get_next_len            #si no es pal retorno al main
 
 save_words:                                 #guardar palabras a imprimir en buffer de salida
     move    a0,     s6                      
@@ -112,7 +113,7 @@ end:
     jal     putch    
     jal     restore_regs                    #restauro regs s
     
-    jal     return_to_main
+    jal     return
 
 
 save_regs:
@@ -137,7 +138,16 @@ restore_regs:
     lw      s7,     20(sp)
     jr      ra
 
-return_to_main:
+return:
+    move    a0,     s4
+    jal     myfree
+
+    move    a0,     s5
+    jal     myfree
+
+    move    a0,     s6
+    jal     myfree
+
     lw      ra,     52(sp)                     
     lw      $fp,    56(sp)
     lw      gp,     60(sp)
