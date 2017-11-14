@@ -14,11 +14,11 @@
 
 \begin{document}
 
-\date{26 de Septiembre del 2017}
+\date{14 de Noviembre del 2017}
 
 \title{Univesidad de Buenos Aires - FIUBA \\ 66:20 Organización de Computadoras \\ Trabajo práctico 1: Programación MIPS}
 
-\author{Barrera Oro, Rafael (83240) \\ Bacigaluppo, Ivan (98064) \\ Irrazabal, Diego (98125)}
+\author{Bacigaluppo, Ivan (98064) \\ Irrazabal, Diego (98125)}
 
 \maketitle
 
@@ -36,25 +36,20 @@
 
 \subsection{Diseño}
 
-Este segundo tp es más complejo que el anterior puesto que el objetivo es familiarizarse con las instrucciones de MIPS y el concepto de ABI.
+Debido a la mayor complejidad de este segundo trabajo practico, nos vimos obligados cambiar la forma de trabajo y nuestras ideas de modelo incremental. Realizando una mayor cantidad de modulos y probando cada uno de forma independente con un main de prueba.
 
-Comenzamos realizando un archivo makefile bastante simple, con algunos flags, para poder compilarlo y ejecutarlo en cuanto antes. Para así poder empezar a probar cualquier cambio que hicieramos, y asegurarnos que compilara adecuadamente con el comando make. Este makefile compilaría el código mediante los siguientes comandos:
+La primera base en C era igual al tp anterior, mas ya sin la función de palindromo implementada. El código C sufrió dos cambios no importantes. Se implementó un algoritmo que cicla sobre los argumentos para detectar los correctos, pudiendo estos estar en desorden, y habiendo aumentado en número. Una vez establecidas las variables pasadas por parámetro o default, se llama a una función handle para manejarlas. Esta función se encarga de abrir y cerrar los archivos, llamando en el medio al segundo cambio significativo de este archivo, la función palindromo. Esta posee un firma distinta, ya que ahora además de detectar si una palabra es un palindromo, debe leer y escribir en los archivos, creando y utilizando los buffers correspondientes, todo implementado en el lenguaje de assembler mips.
 
-	gcc -g -Wall -o tp1 main.c
+Para las funciones en mips, intentamos probar por su cuenta la mayor cantidad posible. Comenzando por las más básicas syscall de lectura y escritura, implementadas dentro de las funciones getch y putch. Getch() se encarga de leer el archivo medianta una syscall, llenando un buffer de entrada con los datos. Mientas que putch() se encarga de escribir los datos del buffer de salida en el archivo correspondiente.
+Esta parte fue en su nivel más fácil y rápida puesto que la cátedra nos facilitó los ejemplos apropiados para trabajar con estas syscall.
 
-Luego comenzamos con el código ya propio de lo pedido en la consigna. En primer lugar, al igual que para el TP0, armamos el main de manera que distinguiese que opción se había ingresado para ejecutar el programa. Al verificar esto, armamos una función para el comando -h, la cual imprime lo pedido; con el comando -V directamente la versión y, por último, hay una función encargada de verificar cual es el archivo de entrada, cual es el de salida del programa y cuales los buffer de entrada y salida. En los primeros dos casos el programa termina inmediatamente después de la impresión.
+La cátedra también nos proveyó con las funciones mymalloc() y myfree() implementadas en mips para crear y liberar los buffers de memoria. A su vez, la funcion que contendria el algoritmo para detectar si una palabra es un palíndromo también fue rápida, puesto que era básicamente traducir el algoritmo diseñado en C para el primero trabajo practico.
 
-Luego de esto, se llama a una función handle que recibe los argumentos correspondientes como parámetros si los hubiese, o NULL en caso contrario. Esta función se encarga de procesar los archivos de entrada y salida, o asiganar los inputo o output standard para trabajar si alguno hubiera sido pasado como NULL.
+Luego implementamos las funciones que necesitaríamos para el diseo final del programa. Getwordlen() adquiere un puntero del bufer de entrada y cicla por sus caracteres hasta encontrar aquel que no pertence a los aceptados por la consigna, obteniendo así la longitud de esta palabra. Con este dato la palabra es copiada al buffer interno del programa, y luego procesado por el algoritmo palindromo. De ser palíndromo esta palabra se copia al buffer de salida. Estas copias se realizan con otra función llamada strcopy(), que copia una determinada cantidad de bytes de una cadena a otra. Luego se vuelve a ciclar sobre el buffer de entrada para leer la siguiente palabra.
 
-Siguiendo el modelo de implementación incremental, en una primera básica versión esta función requeriría un archivo input existente, e imprimiría el resultado por la consola. De esta forma se simplifica la verificación del correcto funcionamiento del programa.
+Por último, la integración. Habiendo probando las funciones de forma independente, uno pensaría que esta parte sería bien facil. Pues uno estaría equivocado. El mayor problema que nos trajo la integración de las funciones la cantidad de variables que nos fuimos obligados a guardar. Por esto, debimos crear dos funciones locales que nos aseguraran no perder los valores de estas variables al llamar a otra funcion, o subrutina. Luego, sí pudimos regresar a nuestro diseño incremental donde integrabamos de a poco cada función, lo que trajo problemas a la hora de procesar los ciclos, ya que debido a la sintaxis de mips es muy díficil ver a simple vista los ciclos anidados, asi como sus condiciones de corte, o quizas ni siquiera. Las llamadas a etiquetas desde branches tambien dificultan la identificacion de ciclos, puesto que tienen la misma sintaxis que el reconocimiento de las condiciones de corte.
 
-Finalmente, handle realiza la verificacion del archivo de entrada. Si lo recibido para este mismo es distinto de NULL, lo abre para lectura; en caso contrario, toma como entrada por defecto la terminal (stdin). Luego, de manera similar, verifica el archivo de salida. Si es distinto de NULL, lo abre pero para escritura en este caso y, de manera contraria, si no se le pasó por comando de entrada, utiliza por defecto la terminal como salida (stdout). Cualquier error en la apertura de los archivos se informa mediante la salida estándar stderr.
-
-A continuación, se llama a la función is\_pal, la cual está codificada en MIPS, tal como pide la consigna. Internamente esta función hace un llamado a getch, una función que se encunetra en otro módulo, en donde se procesa el archivo. Para esto se crea un buffer, utilizando la función mymalloc proporcionada por la cátedra. Luego este buffer se llena mediante una llamada a la syscall read.
-
-Una vez que se tiene el buffer ya cargado, se pasa a leer una por una las palabras del mismo. Para esto nos encontramos con una dificultad que todavía no pudimos resolver, la cual es como separar las palabras en MIPS. Luego, cada una de las palabras debería pasar por la función strlen, la cual devuelve la longitud de ellas. Una vez que se obtiene esta longitud se pasa a un loop en el cual se verifica si la palabra es o no un palíndromo. En caso de que lo sea, se debería hacer una llamada a putch, la cual todavía no se encuentra implementada, pero que internamente debería llenar un buffer de salida y llamar a la syscall write.
-
-Una vez que esté finalizado el código por completo procederemos a probarlo de la misma manera que en el tp0, mediante pruebas automatizadas que se pueden correr directamente desde el makefile.
+Dos rutinas más fueron creadas en este proceso. Print es llamada cuando el bufer de salida fue lleno y resume el proceso de llamar a putch. Por otro lado, se impementó clear_buf para vaciar los buffers cuando esten llenos o dspues de procesar la palabra para el itnerno.
 
 \newpage
 
@@ -79,6 +74,35 @@ Recibe punteros a los nombres completos de los archivos de entrada y salida, pro
 \subsubsection{int main(int argc, char** argv)}
 
 Punto de entrada al programa, se procesan los parametros recibidos de linea de comando y se ejecuta la logica del programa de ser correctos, de lo contrario se muestra la leyenda de ayuda.
+
+\subsubsection{int getch(int, int, char*)}
+
+Recibe el file descriptor del archivo de entrada abierto, la cantidad bytes a leer (el tamaño del buffer) y el buffer donde almacenar los datos. Devuelve un entero correspondiente a la canidad de datos leidos, es decir, debiendo ser igual al tamaño del buffer. Si ocurre algun error devuelve un codigo acorde. Entiéndase 0 si se llegó al final del archivo, -1 si hubo un error al leer el archivo, y -2 si los bytes leidos no son los esperados.
+
+\subsubsection{int putch(int, int, char*)}
+
+Recibe el file descriptor del archivo de salida abierto, la cantidad bytes a imprimir (el tamaño del buffer) y el buffer de donde adquirir los datos. Devueve la cantidad de bytes que se imprimieron en el archivo, o un código de error acorde: -1 si el error fue con el archivo en la syscall, y -2 si fuera el tamaño de bytes impresos.
+
+
+\subsubsection{int getwordlen(char*)}
+
+Recibe el puntero al indice actual del buffer de entrada, y cicla controlando que los caracteres sean los aprobados como parte de una palabra. Corta al encontrar alguno que no, y devuelve la longitud de la palabra qe se encontró. Este dato deberá ser sumado al puntero para en el siguiente ciclo leer la siguiente palabra, y no la misma.
+
+
+\subsubsection{int strcopy(int, char*, char*)}
+
+Copia la cantidad de bytes pasada por parámetro del primer puntero de caracteres al segundo. Devolviendo el número de bytes que copió para controlar.
+
+
+\subsubsection{int is_pl(char*)}
+
+El algoritmo para detectar si una palabra es un palindromo devuelve 1 si lo es y 0 en caso contrario.
+
+
+\subsubsection{void clear_buf(char*)}
+
+Se encarga de vaciar el buffer pasado por parámetro. Ciclando por él, y guardando el caracter null 0 en cada posición que tenga un dato.
+
 
 \subsection{Compilación}
 
