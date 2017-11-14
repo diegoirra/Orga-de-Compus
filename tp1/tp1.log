@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.10.10)  10 OCT 2017 19:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.10.10)  14 NOV 2017 18:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -561,99 +561,15 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 ) (./tp1.c
-[7]
-
-! Package inputenc Error: Unicode char �\expandafter (U+4F1)
-(inputenc)                not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.64 ...iendo con error"); //revisar errores más 
-                                                  especifico que perror?
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! Package inputenc Error: Keyboard character used is undefined
-(inputenc)                in inputencoding `utf8'.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.64 ...iendo con error"); //revisar errores más 
-                                                  especifico que perror?
-You need to provide a definition with \DeclareInputText 
-or \DeclareInputMath before using this key.
-
-[8]
-
-! Package inputenc Error: Unicode char �\expandafter (U+4F1)
-(inputenc)                not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.124 		// habría 
-                   que revisar errores? Si no en los argumentos pasados,
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! Package inputenc Error: Keyboard character used is undefined
-(inputenc)                in inputencoding `utf8'.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.124 		// habría 
-                   que revisar errores? Si no en los argumentos pasados,
-You need to provide a definition with \DeclareInputText 
-or \DeclareInputMath before using this key.
-
-) [9] (./is_pal.S [10]) (./getch.S [11]
-
-! Package inputenc Error: Unicode char �\expandafter (U+4F1)
-(inputenc)                not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.26     lw  	a2,		36($fp)						#el tamaño 
-                                            del buffer en a2
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! Package inputenc Error: Keyboard character used is undefined
-(inputenc)                in inputencoding `utf8'.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.26     lw  	a2,		36($fp)						#el tamaño 
-                                            del buffer en a2
-You need to provide a definition with \DeclareInputText 
-or \DeclareInputMath before using this key.
-
-) (./mymalloc.S [12] [13] [14]) [15] (./tp1.aux
+[7] [8]) [9] (./palindrome.S [10] [11] [12]) [13] (./tp1.aux
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 ) ) 
 Here is how much of TeX's memory you used:
- 5616 strings out of 493029
- 68232 string characters out of 6136233
- 342343 words of memory out of 5000000
- 9087 multiletter control sequences out of 15000+600000
+ 5550 strings out of 493029
+ 67414 string characters out of 6136233
+ 367343 words of memory out of 5000000
+ 9027 multiletter control sequences out of 15000+600000
  12510 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  32i,6n,52p,660b,2005s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -668,10 +584,10 @@ ublic/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti1
 0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on tp1.pdf (16 pages, 207974 bytes).
+Output written on tp1.pdf (14 pages, 193538 bytes).
 PDF statistics:
- 104 PDF objects out of 1000 (max. 8388607)
- 73 compressed objects within 1 object stream
+ 98 PDF objects out of 1000 (max. 8388607)
+ 69 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
