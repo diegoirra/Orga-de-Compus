@@ -34,6 +34,7 @@ palindrome:
     jal     mymalloc                        #creo buffer de salida
     jal     restore_regs                    #restauro regs s
     move    s5,     v0                      #guardo en s5 buffer de salida
+    sw      s5,     64($fp)                 #guardo el puntero al principio del buffer
         
     li      a0,     4096                    #buffer interno grande
     jal     save_regs                       #guardo los regs s
@@ -41,26 +42,34 @@ palindrome:
     jal     restore_regs                    #restauro regs s
     move    s6,     v0                      #guarda puntero al buffer interno en s6
 
+    li      s7,     0                       #en s7 mantengo cuantos bytes ya guarde en buf de salida
+
 get_words:                                  #loop para obtener palabras del archivo
+    beqz    s0,     end                     #si es el final del archivo pasa a imprimir lo que falto
+
     move    a0,     s0                      #input file primer parametro del getch
     move    a1,     s1                      #tam buffer segundo parametro del getch
     move    a2,     s4                      #puntero al buffer tercer parametro de getch
     jal     save_regs                       #guardo los regs s
     jal     getch                       
     jal     restore_regs                    #restauro regs s
+    addu    s0,     v0,     s0              #adelanto el puntero a fd
 
 get_next_len:                               #loop para obtener len de la siguiente palabra
     move    a0,     s4                      #vamos a obtener tam de la proxima palabra
     jal     save_regs                       #guardo los regs s
     jal     getwordlen
     jal     restore_regs                    #restauro regs s
-    move    a0,     v0                      #guardo resultado como primer param de strcopy
+    beqz    v0,     get_words               #si el len es 0, significa que se llegó al final del buffer, lo cargo de nuevo
 
+    move    a0,     v0                      #guardo resultado como primer param de strcopy
     move    a1,     s4                      #buffer a copiar, segundo parametro
     move    a2,     s6                      #buffer donde debe copiar, tercer parametro
     jal     save_regs                       #guardo los regs s
     jal     strcopy
     jal     restore_regs                    #restauro regs s
+    addu    s4,     v0,     s4              #adelanto buffer de entrada
+    addi    s4,     s4,     1
 
     move    a0,     s6                      #llamada a is_pal, con el buffer interno
     jal     save_regs                       #guardo los regs s
@@ -80,16 +89,29 @@ save_words:                                 #guardar palabras a imprimir en buff
     jal     save_regs                       #guardo los regs s
     jal     strcopy                         #copio la palabra en el buffer de salida
     jal     restore_regs                    #restauro regs s
+    addu    s5,     v0,     s5              #adelanto buffer de salida
 
+    addu    s7,     v0,     s7              #sumo bytes copiados a s7
+    bgt     s7,     s3,     print           #si llegue a la cant de bytes del buf de salida imprimo
 
 print:
     move    a0,     s2                      #fd output file primer parametro del putch
     move    a1,     s3                      #tam buffer a imprimir segundo parametro del putch
-    move    a2,     s5                      #buffer a imprimir tercer parametro del putch
+    lw      a2,     64($fp)                 #buffer a imprimir tercer parametro del putch
     jal     save_regs                       #guardo los regs s
     jal     putch    
     jal     restore_regs                    #restauro regs s
 
+    jal     get_next_len
+
+end:
+    move    a0,     s2                      #fd output file primer parametro del putch
+    move    a1,     s3                      #tam buffer a imprimir segundo parametro del putch
+    lw      a2,     64($fp)                 #buffer a imprimir tercer parametro del putch
+    jal     save_regs                       #guardo los regs s
+    jal     putch    
+    jal     restore_regs                    #restauro regs s
+    
     jal     return_to_main
 
 
