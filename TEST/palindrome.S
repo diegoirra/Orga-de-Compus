@@ -87,7 +87,7 @@ get_next_len:                               #loop para obtener len de la siguien
     jal     is_pal
     jal     restore_regs                    #restauro regs s
 
-    beqz    v0,     get_next_len            #si no es pal retorno al main
+    beqz    v0,     get_next_len            #si no es pal voy de nuevo a get next len
 
 save_words:                                 #guardar palabras a imprimir en buffer de salida
     move    a0,     s6                      
@@ -160,15 +160,6 @@ restore_regs:
     jr      ra
 
 return:
-    move    a0,     s4
-    jal     myfree
-
-    move    a0,     s5
-    jal     myfree
-
-    move    a0,     s6
-    jal     myfree
-
     lw      ra,     52(sp)                     
     lw      $fp,    56(sp)
     lw      gp,     60(sp)
@@ -178,4 +169,4 @@ return:
 .end palindrome
 
 .data
-    newline: .asciiz "\n"
+    newline: .asciiz " "

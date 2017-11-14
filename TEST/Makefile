@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS := -g -Wall
-INPUT=tp1.c mymalloc.S is_pal.S getch.S getwordlen.S putch.S palindrome.S strcopy.S
+INPUT=tp1.c mymalloc.S is_pal.S getch.S getwordlen.S putch.S palindrome.S strcopy.S clear_buf.S
 OUTPUT=tp1
 TESTS_DIR=tests
 

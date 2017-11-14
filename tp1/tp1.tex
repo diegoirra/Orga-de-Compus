@@ -91,7 +91,7 @@ Se ha incluido un archivo Makefile para simplificar la obtención del ejecutable
 
 \begin{lstlisting}[language=bash]
 $ make
-gcc -g -Wall -o tp1 tp1.c 
+gcc -g -Wall -o tp1 tp1.c mymalloc.S is_pal.S getch.S getwordlen.S putch.S palindrome.S strcopy.S clear_buf.S
 $ ls
 tp1.c Makefile tp1 
 \end{lstlisting}
@@ -101,7 +101,7 @@ tp1.c Makefile tp1
 Una vez obtenido el ejecutable, el mismo se puede ejecutar con el parámetro \textit{-h} para obtener la leyenda de ayuda:
 
 \begin{lstlisting}[language=bash]
-$ ./tp0 -h
+$ ./tp1 -h
 Usage:
 	tp1 -h
 	tp1 -V
@@ -210,8 +210,7 @@ bob
 
 \begin{lstlisting}[language=bash]
 $ make asm
-gcc -g -Wall -O0 -S tp1.c
-Makefile tp0.c    tp1.s
+gcc -g -Wall -O0 -S tp1.c mymalloc.S is_pal.S getch.S getwordlen.S putch.S palindrome.S strcopy.S clear_buf.S
 \end{lstlisting}
 
 \lstset{
@@ -239,7 +238,7 @@ Makefile tp0.c    tp1.s
   morekeywords={*,...}               % if you want to add more keywords to the set
 }
 
-\lstinputlisting{is_pal.S}
+\lstinputlisting{palindrome.S}
 
 \section{Conclusiones}
 
